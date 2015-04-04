@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">FindMyFriends</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main_map">Map</string>
-    <string name="title_activity_maps">FindMyFriends - Map</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_sign_up">Sign up</string>
+    <string name="signup">\nNew user? Click here to sign up!</string>
+    <string name="title_activity_signup">Sign Up</string>
 </resources>

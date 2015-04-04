@@ -209,6 +209,10 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
 
     }
 
+    public void moveToSignupActivity(View view) {
+        startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Nickname.NAME,

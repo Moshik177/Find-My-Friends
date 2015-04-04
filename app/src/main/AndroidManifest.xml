@@ -49,6 +49,14 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
+        <activity
+            android:name=".SignupActivity"
+            android:label="@string/title_activity_signup"
+            android:parentActivityName=".WelcomeScreenActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sadna.app.findmyfriends.WelcomeScreenActivity" />
+        </activity>
     </application>
 
 </manifest>
