@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 
 public class SignupActivity extends ActionBarActivity {
@@ -35,5 +37,11 @@ public class SignupActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void attemptSignup(View view)
+    {
+        // TODO: Add signUp class to get all the form values and then continue with logic
+        String username = ((EditText) findViewById(R.id.userNameText)).getText().toString();
     }
 }

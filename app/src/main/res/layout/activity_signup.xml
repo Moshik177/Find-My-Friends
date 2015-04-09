@@ -119,9 +119,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/signupButton"
                 android:id="@+id/signupButton"
-                android:enabled="false"
-                android:focusable="false"
-                android:layout_gravity="center_horizontal" />
+                android:enabled="true"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/holo_orange_light"
+                style="?android:textAppearanceSmall"
+                android:textStyle="bold"
+                android:onClick="attemptSignup"
+                android:clickable="true" />
 
         </LinearLayout>
     </ScrollView>

@@ -117,18 +117,17 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
+        // Check for a valid username.
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        }
 
         // Check for a valid password.
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("This field is required");
             focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid username.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
             cancel = true;
         }
 
