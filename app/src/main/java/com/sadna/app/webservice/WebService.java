@@ -16,7 +16,7 @@ import java.net.URL;
  */
 public class WebService {
     private final String namespace = "http://dbutils.app.sadna.com/";
-    private final String url = "http://10.0.0.8:8080/ws/dbutils?wsdl";
+    private final String url = "http://vmedu68.mtacloud.co.il:8081/ws/dbutils?wsdl";
     private String methodName = "getUser";
     private String soapAction =  "http://dbutils.app.sadna.com/getUser";
 

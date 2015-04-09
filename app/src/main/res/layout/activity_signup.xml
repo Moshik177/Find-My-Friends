@@ -20,4 +20,110 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/firstNameText"
+                android:maxLength="255"
+                android:singleLine="true"
+                android:hint="@string/firstNameField" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lastNameText"
+                android:singleLine="true"
+                android:maxLength="255"
+                android:hint="@string/lastNameField" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailText"
+                android:maxLength="255"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                android:hint="@string/emailField" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/userNameText"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:hint="@string/usernameField" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/passwordText"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:password="false"
+                android:selectAllOnFocus="true"
+                android:inputType="textPassword"
+                android:hint="@string/passwordField" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/birthdayText"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:hint="@string/birthdayField"
+                android:editable="false" />
+
+            <DatePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:spinnersShown="true" />
+
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maleButton"
+                    android:id="@+id/maleButton"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/femaleButton"
+                    android:id="@+id/femaleButton"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1" />
+            </RadioGroup>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/signupButton"
+                android:id="@+id/signupButton"
+                android:enabled="false"
+                android:focusable="false"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

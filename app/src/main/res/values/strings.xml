@@ -3,6 +3,15 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_sign_up">Sign up</string>
-    <string name="signup">\nNew user? Click here to sign up!</string>
+    <string name="signup">\nSign up for FindMyFriends</string>
     <string name="title_activity_signup">Sign Up</string>
+    <string name="firstNameField">First Name</string>
+    <string name="lastNameField">Last Name</string>
+    <string name="emailField">Email</string>
+    <string name="usernameField">Username</string>
+    <string name="passwordField">Password</string>
+    <string name="birthdayField">Birthday</string>
+    <string name="maleButton">Male</string>
+    <string name="femaleButton">Female</string>
+    <string name="signupButton">Sign up</string>
 </resources>
