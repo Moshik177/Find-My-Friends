@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap mGoogleMap; // Might be null if Google Play services APK is not available.
     private LatLng myPosition;
 
     @Override
@@ -23,11 +23,11 @@ public class MapsActivity extends FragmentActivity {
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
-        if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
-            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (mGoogleMap != null) {
+            mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             UiSettings mapSettings;
-            mapSettings = mMap.getUiSettings();
+            mapSettings = mGoogleMap.getUiSettings();
             mapSettings.setZoomControlsEnabled(true);
             mapSettings.setZoomGesturesEnabled(true);
             mapSettings.setAllGesturesEnabled(true);
@@ -60,7 +60,7 @@ public class MapsActivity extends FragmentActivity {
 
             myPosition = new LatLng(latitude, longitude);
 
-            mMap.addMarker(new MarkerOptions().position(myPosition).title("Start"));
+            mGoogleMap.addMarker(new MarkerOptions().position(myPosition).title("Start"));
         }
     }
 
@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity {
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
+     * call {@link #setUpMap()} once when {@link #mGoogleMap} is not null.
      * <p/>
      * If it isn't installed {@link SupportMapFragment} (and
      * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
@@ -87,12 +87,12 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
+        if (mGoogleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+            mGoogleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
-            if (mMap != null) {
+            if (mGoogleMap != null) {
                 setUpMap();
             }
         }
@@ -102,9 +102,9 @@ public class MapsActivity extends FragmentActivity {
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
      * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
+     * This should only be called once and when we are sure that {@link #mGoogleMap} is not null.
      */
     private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        //mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 }

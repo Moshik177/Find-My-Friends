@@ -27,18 +27,16 @@ import javax.mail.internet.InternetAddress;
 
 public class SignupActivity extends ActionBarActivity {
 
-    private Calendar mCalendar = Calendar.getInstance();
-    private UserSignUpTask mSignUpTask = null;
-
-    private int mResult;
     private final int USER_ALREADY_EXISTS = 1;
+    private Calendar mCalendar = Calendar.getInstance();
+    private SignUpTask mSignUpTask = null;
+    private int mSignUpActionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,144 +60,65 @@ public class SignupActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void attemptSignup(View view) {
-        SignupForm signupForm = new SignupForm();
-        signupForm.setFirstName(((EditText) findViewById(R.id.firstNameText)).getText().toString());
-        signupForm.setLastName(((EditText) findViewById(R.id.lastNameText)).getText().toString());
-        signupForm.setEmail(((EditText) findViewById(R.id.emailText)).getText().toString());
-        signupForm.setUsername(((EditText) findViewById(R.id.userNameText)).getText().toString());
-        signupForm.setPassword(((EditText) findViewById(R.id.passwordText)).getText().toString());
-        signupForm.setBirthdate(((EditText) findViewById(R.id.birthdayText)).getText().toString());
-        signupForm.setGender(getGenderFromSignupForm());
+    public void attemptSignUp(View view) {
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setFirstName(((EditText) findViewById(R.id.firstNameText)).getText().toString());
+        signUpForm.setLastName(((EditText) findViewById(R.id.lastNameText)).getText().toString());
+        signUpForm.setEmail(((EditText) findViewById(R.id.emailText)).getText().toString());
+        signUpForm.setUsername(((EditText) findViewById(R.id.userNameText)).getText().toString());
+        signUpForm.setPassword(((EditText) findViewById(R.id.passwordText)).getText().toString());
+        signUpForm.setBirthdate(((EditText) findViewById(R.id.birthdayText)).getText().toString());
+        signUpForm.setGender(getGenderFromSignUpForm());
 
-        if (!validateForm(signupForm)) {
+        if (!validateForm(signUpForm)) {
             return;
         }
 
         // Actually try to use WS to add user. Check for exception if username already exists
         // If all good, move to login activity
-        mSignUpTask = new UserSignUpTask(signupForm);
+        mSignUpTask = new SignUpTask(signUpForm);
         mSignUpTask.execute((Void) null);
     }
 
-    public class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
-
-        private SignupForm mSignupForm;
-        private AlertDialog.Builder mBuilder;
-
-        UserSignUpTask(SignupForm signupForm) {
-            mSignupForm = signupForm;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            WebService wsHttpRequest = new WebService("addUser");
-            String result = null;
-
-            try {
-                result = wsHttpRequest.execute("arg0", mSignupForm.getFirstName(), "arg1", mSignupForm.getLastName(), "arg2", mSignupForm.getEmail(),
-                        "arg3", mSignupForm.getUsername(), "arg4", mSignupForm.getPassword(), "arg5", mSignupForm.getBirthdate(), "arg6", mSignupForm.getGender());
-            }
-            catch (Throwable exception) {
-                if (exception.getMessage().contains("User already exists"))
-                {
-                    mResult = USER_ALREADY_EXISTS;
-                }
-
-                exception.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mBuilder = new AlertDialog.Builder(SignupActivity.this);
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mSignupForm = null;
-
-            if (success) {
-                mBuilder.setTitle("Registration Complete!")
-                        .setMessage("The registration process completed. Click OK to return the login screen.")
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                                finish();
-                            }
-                        });
-                AlertDialog alert = mBuilder.create();
-                alert.show();
-            }
-            else {
-                executeResult();
-            }
-        }
-
-        private void executeResult() {
-            switch (mResult) {
-                case USER_ALREADY_EXISTS:
-                    ((EditText) findViewById(R.id.userNameText)).setError(getString(R.string.error_user_already_exists));
-                    findViewById(R.id.userNameText).requestFocus();
-                    break;
-                default:
-                    findViewById(R.id.firstNameText).requestFocus();
-                    break;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mSignupForm = null;
-        }
-    }
-
-    private boolean validateForm(SignupForm signupForm) {
+    private boolean validateForm(SignUpForm signUpForm) {
         boolean valid = true;
 
         resetErrors();
 
-        if (TextUtils.isEmpty(signupForm.getFirstName())) {
+        if (TextUtils.isEmpty(signUpForm.getFirstName())) {
             ((EditText) findViewById(R.id.firstNameText)).setError(getString(R.string.error_field_required));
             valid = false;
         }
 
-        if (TextUtils.isEmpty(signupForm.getLastName())) {
+        if (TextUtils.isEmpty(signUpForm.getLastName())) {
             ((EditText) findViewById(R.id.lastNameText)).setError(getString(R.string.error_field_required));
             valid = false;
         }
 
-        if (TextUtils.isEmpty(signupForm.getEmail())) {
+        if (TextUtils.isEmpty(signUpForm.getEmail())) {
             ((EditText) findViewById(R.id.emailText)).setError(getString(R.string.error_field_required));
             valid = false;
-        }
-
-        else if (!validateEmail(signupForm.getEmail()))
-        {
+        } else if (!validateEmail(signUpForm.getEmail())) {
             ((EditText) findViewById(R.id.emailText)).setError(getString(R.string.error_invalid_email));
             valid = false;
         }
 
-        if (TextUtils.isEmpty(signupForm.getUsername())) {
+        if (TextUtils.isEmpty(signUpForm.getUsername())) {
             ((EditText) findViewById(R.id.userNameText)).setError(getString(R.string.error_field_required));
             valid = false;
         }
 
-        if (TextUtils.isEmpty(signupForm.getPassword())) {
+        if (TextUtils.isEmpty(signUpForm.getPassword())) {
             ((EditText) findViewById(R.id.passwordText)).setError(getString(R.string.error_field_required));
             valid = false;
         }
 
-        if (TextUtils.isEmpty(signupForm.getBirthdate())) {
+        if (TextUtils.isEmpty(signUpForm.getBirthdate())) {
             ((EditText) findViewById(R.id.birthdayText)).setError(getString(R.string.error_field_required));
             valid = false;
         }
 
-        if (signupForm.getGender() == null) {
+        if (signUpForm.getGender() == null) {
             ((RadioButton) findViewById(R.id.femaleButton)).setError(getString(R.string.error_field_required));
             valid = false;
         }
@@ -208,20 +127,20 @@ public class SignupActivity extends ActionBarActivity {
     }
 
     private void resetErrors() {
-            ((EditText) findViewById(R.id.firstNameText)).setError(null);
-            ((EditText) findViewById(R.id.lastNameText)).setError(null);
-            ((EditText) findViewById(R.id.emailText)).setError(null);
-            ((EditText) findViewById(R.id.userNameText)).setError(null);
-            ((EditText) findViewById(R.id.passwordText)).setError(null);
-            ((EditText) findViewById(R.id.birthdayText)).setError(null);
-            ((RadioButton) findViewById(R.id.femaleButton)).setError(null);
+        ((EditText) findViewById(R.id.firstNameText)).setError(null);
+        ((EditText) findViewById(R.id.lastNameText)).setError(null);
+        ((EditText) findViewById(R.id.emailText)).setError(null);
+        ((EditText) findViewById(R.id.userNameText)).setError(null);
+        ((EditText) findViewById(R.id.passwordText)).setError(null);
+        ((EditText) findViewById(R.id.birthdayText)).setError(null);
+        ((RadioButton) findViewById(R.id.femaleButton)).setError(null);
     }
 
     public void resetGenderErrors(View view) {
         ((RadioButton) findViewById(R.id.femaleButton)).setError(null);
     }
 
-    public void birthdatePicker(View view) {
+    public void birthDatePicker(View view) {
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -263,25 +182,31 @@ public class SignupActivity extends ActionBarActivity {
         return result;
     }
 
-    private String getGenderFromSignupForm() {
+    private String getGenderFromSignUpForm() {
 
-        if (((RadioGroup) findViewById(R.id.genderGroup)).getCheckedRadioButtonId() == -1)
-        {
+        if (((RadioGroup) findViewById(R.id.genderGroup)).getCheckedRadioButtonId() == -1) {
             return null;
         }
 
         String male = ((RadioButton) findViewById(R.id.maleButton)).getText().toString();
         String female = ((RadioButton) findViewById(R.id.femaleButton)).getText().toString();
 
-        if (male.equals("") || male == null)
-        {
+        if (male.equals("") || male == null) {
             return female;
         }
 
         return male;
     }
 
-    private class SignupForm {
+    private class SignUpForm {
+
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String username;
+        private String password;
+        private String birthdate;
+        private String gender;
 
         public String getFirstName() {
             return firstName;
@@ -338,13 +263,78 @@ public class SignupActivity extends ActionBarActivity {
         public void setGender(String gender) {
             this.gender = gender;
         }
+    }
 
-        private String firstName;
-        private String lastName;
-        private String email;
-        private String username;
-        private String password;
-        private String birthdate;
-        private String gender;
+    public class SignUpTask extends AsyncTask<Void, Void, Boolean> {
+
+        private SignUpForm mSignUpForm;
+        private AlertDialog.Builder mBuilder = null;
+
+        SignUpTask(SignUpForm signUpForm) {
+            mSignUpForm = signUpForm;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            WebService wsHttpRequest = new WebService("addUser");
+            String result = null;
+
+            try {
+                result = wsHttpRequest.execute("arg0", mSignUpForm.getFirstName(), "arg1", mSignUpForm.getLastName(), "arg2", mSignUpForm.getEmail(),
+                        "arg3", mSignUpForm.getUsername(), "arg4", mSignUpForm.getPassword(), "arg5", mSignUpForm.getBirthdate(), "arg6", mSignUpForm.getGender());
+            } catch (Throwable exception) {
+                if (exception.getMessage().contains("User already exists")) {
+                    mSignUpActionResult = USER_ALREADY_EXISTS;
+                }
+
+                exception.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mBuilder = new AlertDialog.Builder(SignupActivity.this);
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mSignUpForm = null;
+
+            if (success) {
+                mBuilder.setTitle("Registration Complete!")
+                        .setMessage("The registration process completed. Click OK to return the login screen.")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                finish();
+                            }
+                        });
+                AlertDialog alert = mBuilder.create();
+                alert.show();
+            } else {
+                executeResult();
+            }
+        }
+
+        private void executeResult() {
+            switch (mSignUpActionResult) {
+                case USER_ALREADY_EXISTS:
+                    ((EditText) findViewById(R.id.userNameText)).setError(getString(R.string.error_user_already_exists));
+                    findViewById(R.id.userNameText).requestFocus();
+                    break;
+                default:
+                    findViewById(R.id.firstNameText).requestFocus();
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mSignUpForm = null;
+        }
     }
 }

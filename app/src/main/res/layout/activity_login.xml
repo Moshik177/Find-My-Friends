@@ -64,7 +64,7 @@
         android:clickable="true"
         android:textStyle="bold"
         android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
-        android:onClick="moveToSignupActivity"
-        android:text="@string/signup" />
+        android:onClick="moveToSignUpActivity"
+        android:text="@string/sign_up" />
 
 </LinearLayout>

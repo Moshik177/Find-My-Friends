@@ -91,7 +91,7 @@
                 android:editable="false"
                 android:clickable="true"
                 android:enabled="true"
-                android:onClick="birthdatePicker"
+                android:onClick="birthDatePicker"
                 android:textColor="@android:color/holo_orange_light"
                 android:focusableInTouchMode="false" />
 
@@ -122,14 +122,14 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/signupButton"
-                android:id="@+id/signupButton"
+                android:text="@string/signUpButton"
+                android:id="@+id/signUpButton"
                 android:enabled="true"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@android:color/holo_orange_light"
                 style="?android:textAppearanceSmall"
                 android:textStyle="bold"
-                android:onClick="attemptSignup"
+                android:onClick="attemptSignUp"
                 android:clickable="true" />
 
         </LinearLayout>

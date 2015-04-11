@@ -53,6 +53,8 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Disable auto popup of the keyboard
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Set up the login form.
@@ -110,7 +112,8 @@ public class LoginActivity extends ActionBarActivity {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        }
+        else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
@@ -146,7 +149,8 @@ public class LoginActivity extends ActionBarActivity {
                     mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
-        } else {
+        }
+        else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -154,7 +158,7 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    public void moveToSignupActivity(View view) {
+    public void moveToSignUpActivity(View view) {
         startActivity(new Intent(getApplicationContext(), SignupActivity.class));
     }
 
@@ -196,7 +200,8 @@ public class LoginActivity extends ActionBarActivity {
             if (success) {
                 finish();
                 startActivity(new Intent(getApplicationContext(), MapsActivity.class));
-            } else {
+            }
+            else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -209,6 +214,3 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 }
-
-
-
