@@ -7,9 +7,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Created by avihoo on 14/03/2015.
@@ -17,6 +15,7 @@ import java.net.URL;
 public class WebService {
     private final String namespace = "http://dbutils.app.sadna.com/";
     private final String url = "http://vmedu68.mtacloud.co.il:8081/ws/dbutils?wsdl";
+    private final int TIMEOUT_IN_MILLISECONDS = 6000;
     private String methodName = "getUser";
     private String soapAction =  "http://dbutils.app.sadna.com/getUser";
 
@@ -54,8 +53,7 @@ public class WebService {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(this.url);
-
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(this.url, TIMEOUT_IN_MILLISECONDS);
         androidHttpTransport.call(this.soapAction, envelope);
         SoapPrimitive  resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
         return resultsRequestSOAP.toString();

@@ -5,6 +5,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.sadna.app.findmyfriends.LoginActivity"
     android:background="@android:color/holo_blue_light">
 
@@ -14,14 +16,24 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_marginBottom="8dp" android:visibility="gone" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/title_activity_login"
+        android:id="@+id/textView"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
     <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
-        android:layout_height="155dp"
-        android:fillViewport="false">
+        android:layout_height="155dp">
 
         <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical">
 
-            <AutoCompleteTextView android:id="@+id/username" android:layout_width="match_parent"
+            <EditText android:id="@+id/username" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_username"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -30,10 +42,9 @@
 
             <EditText android:id="@+id/password" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified" android:inputType="textPassword"
-                android:maxLines="1" android:singleLine="true"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/holo_orange_light" />
 
             <Button android:id="@+id/sign_in_button" style="?android:textAppearanceSmall"
@@ -57,6 +68,3 @@
         android:text="@string/signup" />
 
 </LinearLayout>
-
-
-

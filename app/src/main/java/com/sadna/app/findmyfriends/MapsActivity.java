@@ -29,6 +29,7 @@ public class MapsActivity extends FragmentActivity {
             UiSettings mapSettings;
             mapSettings = mMap.getUiSettings();
             mapSettings.setZoomControlsEnabled(true);
+            mapSettings.setZoomGesturesEnabled(true);
             mapSettings.setAllGesturesEnabled(true);
             mapSettings.setCompassEnabled(true);
             mapSettings.setMapToolbarEnabled(true);
