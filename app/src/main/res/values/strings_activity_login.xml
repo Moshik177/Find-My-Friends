@@ -4,8 +4,8 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in">Log in</string>
+    <string name="action_sign_in_short">Log in</string>
 
     <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_email">This email is invalid</string>
@@ -13,4 +13,5 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_user_already_exists">Username already exists</string>
+    <string name="error_login_fb_error">\nOops.. error during login</string>
 </resources>

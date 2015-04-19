@@ -14,4 +14,5 @@
     <string name="maleButton">Male</string>
     <string name="femaleButton">Female</string>
     <string name="signUpButton">Sign up</string>
+    <string name="facebook_app_id">412942522220397</string>
 </resources>

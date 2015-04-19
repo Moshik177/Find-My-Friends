@@ -27,10 +27,10 @@ import javax.mail.internet.InternetAddress;
 
 public class SignupActivity extends ActionBarActivity {
 
-    private final int USER_ALREADY_EXISTS = 1;
+    private static final int USER_ALREADY_EXISTS = 1;
     private Calendar mCalendar = Calendar.getInstance();
     private SignUpTask mSignUpTask = null;
-    private int mSignUpActionResult;
+    private static int mSignUpActionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,71 +198,22 @@ public class SignupActivity extends ActionBarActivity {
         return male;
     }
 
-    private class SignUpForm {
+    public static boolean signUpUser(String firstname, String lastname, String email, String username, String password, String birthdate, String gender) {
+        WebService wsHttpRequest = new WebService("addUser");
+        String result = null;
 
-        private String firstName;
-        private String lastName;
-        private String email;
-        private String username;
-        private String password;
-        private String birthdate;
-        private String gender;
+        try {
+            result = wsHttpRequest.execute(firstname, lastname, email, username, password, birthdate, gender);
+        } catch (Throwable exception) {
+            if (exception.getMessage().contains("User already exists")) {
+                mSignUpActionResult = USER_ALREADY_EXISTS;
+            }
 
-        public String getFirstName() {
-            return firstName;
+            exception.printStackTrace();
+            return false;
         }
 
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getBirthdate() {
-            return birthdate;
-        }
-
-        public void setBirthdate(String birthdate) {
-            this.birthdate = birthdate;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
+        return true;
     }
 
     public class SignUpTask extends AsyncTask<Void, Void, Boolean> {
@@ -276,22 +227,8 @@ public class SignupActivity extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            WebService wsHttpRequest = new WebService("addUser");
-            String result = null;
-
-            try {
-                result = wsHttpRequest.execute("arg0", mSignUpForm.getFirstName(), "arg1", mSignUpForm.getLastName(), "arg2", mSignUpForm.getEmail(),
-                        "arg3", mSignUpForm.getUsername(), "arg4", mSignUpForm.getPassword(), "arg5", mSignUpForm.getBirthdate(), "arg6", mSignUpForm.getGender());
-            } catch (Throwable exception) {
-                if (exception.getMessage().contains("User already exists")) {
-                    mSignUpActionResult = USER_ALREADY_EXISTS;
-                }
-
-                exception.printStackTrace();
-                return false;
-            }
-
-            return true;
+            return signUpUser(mSignUpForm.getFirstName(), mSignUpForm.getLastName(), mSignUpForm.getEmail(),
+                    mSignUpForm.getUsername(), mSignUpForm.getPassword(), mSignUpForm.getBirthdate(), mSignUpForm.getGender());
         }
 
         protected void onPreExecute() {

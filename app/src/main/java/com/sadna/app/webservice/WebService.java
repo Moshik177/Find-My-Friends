@@ -44,12 +44,12 @@ public class WebService {
 
     public String execute(String... params) throws XmlPullParserException, IOException {
         SoapObject request = new SoapObject(this.namespace, this.methodName);
-        for (int i = 0; i < params.length; i+=2)
+        for (int i = 0; i < params.length; i++)
         {
             PropertyInfo propInfo = new PropertyInfo();
-            propInfo.name = params[i];
+            propInfo.name = "arg" + i;
             propInfo.type = PropertyInfo.STRING_CLASS;
-            request.addPropertyIfValue(propInfo, params[i + 1]);
+            request.addPropertyIfValue(propInfo, params[i]);
         }
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
