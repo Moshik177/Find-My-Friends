@@ -92,7 +92,7 @@ public class LoginActivity extends ActionBarActivity {
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
-                        Log.v("LoginActivity", exception.getCause().toString());
+                        Log.e("LoginActivity", exception.getCause().toString());
                     }
                 });
 
@@ -307,7 +307,7 @@ public class LoginActivity extends ActionBarActivity {
             result = wsHttpRequest.execute(username, password);
         } catch (Throwable e) {
             e.printStackTrace();
-            Log.v("LoginActivity", e.getCause().toString());
+            Log.e("LoginActivity", e.getCause().toString());
             return false;
         }
 
@@ -375,7 +375,7 @@ public class LoginActivity extends ActionBarActivity {
                 signUpWithFacebook(fbUserName.getFirstName(), fbUserName.getLastName(), fbUserName.getEmail(), fbUserName.getEmail(), fbUserName.getPassword(), "", fbUserName.getGender());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Log.v("LoginActivity", e.getCause().toString());
+                Log.e("LoginActivity", e.getCause().toString());
             }
         }
 

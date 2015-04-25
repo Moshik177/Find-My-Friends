@@ -13,12 +13,12 @@ import java.io.IOException;
  * Created by avihoo on 14/03/2015.
  */
 public class WebService {
-    private final String namespace = "http://dbutils.app.sadna.com/";
-    private final String url = "http://vmedu68.mtacloud.co.il:8081/ws/dbutils?wsdl";
+    private final String namespace = "http://interfaces.dbutils.app.sadna.com/";
+    private final String url = "http://vmedu68.mtacloud.co.il:8080/sadna.dbutils-webservice/dbutils-webservice?wsdl";
     private final int TIMEOUT_IN_MILLISECONDS = 6000;
 
     private String methodName = "getUser";
-    private String soapAction =  "http://dbutils.app.sadna.com/getUser";
+    private String soapAction =  "http://interfaces.dbutils.app.sadna.com/getUser";
 
     public String getMethodName() {
         return methodName;
