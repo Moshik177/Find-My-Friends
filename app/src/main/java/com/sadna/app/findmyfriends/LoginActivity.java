@@ -2,7 +2,9 @@ package com.sadna.app.findmyfriends;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import android.os.Build;
@@ -16,7 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -37,8 +38,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
-import java.security.MessageDigest;
-
 
 /**
  * A login screen that offers login via username and password.
@@ -59,64 +58,95 @@ public class LoginActivity extends ActionBarActivity {
     private CallbackManager mCallbackManager;
     private AccessTokenTracker mAccessTokenTracker;
     private LoginButton mLoginButton;
-    private FbUserName fbUserName;
+    private FbUserName mFbUserName;
+
+    private SharedPreferences mSharedPref;
+
+    private final String kUSERID = "fmf_login_userid";
+    private final String kUSERNAME = "fmf_login_username";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-        fbUserName = new FbUserName();
-        mAccessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
-                updateWithToken(newAccessToken);
-            }
-        };
-        updateWithToken(AccessToken.getCurrentAccessToken());
-        mCallbackManager = CallbackManager.Factory.create();
-
-        LoginManager.getInstance().registerCallback(mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        SignUpWithFacebookAsyncTask signUpWithFacebookAsyncTask = new SignUpWithFacebookAsyncTask(loginResult.getAccessToken());
-                        signUpWithFacebookAsyncTask.execute((Void) null);
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                        Log.v("LoginActivity", "cancel");
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                        Log.e("LoginActivity", exception.getCause().toString());
-                    }
-                });
-
         setContentView(R.layout.activity_login);
-        mLoginButton = (LoginButton) findViewById(R.id.login_button);
-        mLoginButton.setReadPermissions(Arrays.asList("public_profile, email"));
+        mSharedPref = getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0); // 0 - for private mode;
 
-        // Disable auto popup of the keyboard
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        // Check if user already logged in from past times, if so, store username and id for rest of app use and go to groups activity
+        String alreadyLoggedIn = mSharedPref.getString(kUSERID, "");
+        if (!alreadyLoggedIn.isEmpty())
+        {
+            // For debug - this cleans the logged in user details - should be when logging out
+            /*
+            SharedPreferences.Editor editor = mSharedPref.edit();
+            editor.remove(kUSERID);
+            editor.remove(kUSERNAME);
+            editor.commit();
+            */
 
-        // Set up the login form.
-        mUsernameView = (EditText) findViewById(R.id.username);
-        mPasswordView = (EditText) findViewById(R.id.password);
+            ((MyApplication) getApplication()).setUserId(mSharedPref.getString(kUSERID, ""));
+            ((MyApplication) getApplication()).setUsername(mSharedPref.getString(kUSERNAME, ""));
+            moveToMainPage();
+            finish();
+            return;
+        }
+        else {
+            mFbUserName = new FbUserName();
+            mAccessTokenTracker = new AccessTokenTracker() {
+                @Override
+                protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                    updateWithToken(newAccessToken);
+                }
+            };
+            mCallbackManager = CallbackManager.Factory.create();
 
-        Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+            LoginManager.getInstance().registerCallback(mCallbackManager,
+                    new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            SignUpWithFacebookAsyncTask signUpWithFacebookAsyncTask = new SignUpWithFacebookAsyncTask(loginResult.getAccessToken());
+                            signUpWithFacebookAsyncTask.execute((Void) null);
+                        }
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+                        @Override
+                        public void onCancel() {
+                            // App code
+                            Log.v("LoginActivity", "cancel");
+                        }
+
+                        @Override
+                        public void onError(FacebookException exception) {
+                            // App code
+                            Log.e("LoginActivity", exception.getCause().toString());
+                        }
+                    });
+
+            updateWithToken(AccessToken.getCurrentAccessToken());
+            mLoginButton = (LoginButton) findViewById(R.id.login_button);
+            mLoginButton.setReadPermissions(Arrays.asList("public_profile, email"));
+
+            // Disable auto popup of the keyboard
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+            // Set up the login form.
+            mUsernameView = (EditText) findViewById(R.id.username);
+            mPasswordView = (EditText) findViewById(R.id.password);
+
+            Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
+            mSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
+
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+        }
+    }
+
+    private void moveToMainPage() {
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 
     private void userGraphRequest(AccessToken accessToken) {
@@ -131,11 +161,11 @@ public class LoginActivity extends ActionBarActivity {
                         Log.v("LoginActivity", response.toString());
                         try {
                             String[] fullName = object.getString("name").split(" ");
-                            fbUserName.setFirstName(fullName[0]);
-                            fbUserName.setLastName(fullName[1]);
-                            fbUserName.setEmail(object.getString("email"));
-                            fbUserName.setPassword(hashString(fbUserName.getEmail()));
-                            fbUserName.setGender(object.getString("gender").substring(0,1).toUpperCase() + object.getString("gender").substring(1));
+                            mFbUserName.setFirstName(fullName[0]);
+                            mFbUserName.setLastName(fullName[1]);
+                            mFbUserName.setEmail(object.getString("email"));
+                            mFbUserName.setPassword(hashString(mFbUserName.getEmail()));
+                            mFbUserName.setGender(object.getString("gender").substring(0, 1).toUpperCase() + object.getString("gender").substring(1));
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }
@@ -189,7 +219,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 @Override
                 public void run() {
-                    UserLoginWithFacebookAsyncTask userLoginWithFacebookAsyncTask = new UserLoginWithFacebookAsyncTask(currentAccessToken);
+                    UserLoginWithFacebookAsyncTask userLoginWithFacebookAsyncTask = new UserLoginWithFacebookAsyncTask(currentAccessToken, getApplication());
                     userLoginWithFacebookAsyncTask.execute((Void) null);
                 }
             }, 1);
@@ -247,7 +277,7 @@ public class LoginActivity extends ActionBarActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
+            mAuthTask = new UserLoginTask(username, password, getApplication());
             mAuthTask.execute((Void) null);
         }
     }
@@ -292,7 +322,14 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     private void successLogin() {
-        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        SharedPreferences.Editor editor = mSharedPref.edit();
+
+        //on the login store the login
+        editor.putString(kUSERID, ((MyApplication) getApplication()).getUserId());
+        editor.putString(kUSERNAME, ((MyApplication) getApplication()).getUsername());
+        editor.commit();
+
+        moveToMainPage();
     }
 
     private void failedLogin() {
@@ -302,9 +339,18 @@ public class LoginActivity extends ActionBarActivity {
     protected boolean loginThroughWebService(String username, String password) {
         WebService wsHttpRequest = new WebService("checkUserDetails");
         String result = null;
+        String userDetails = null;
 
         try {
             result = wsHttpRequest.execute(username, password);
+            if (Boolean.valueOf(result) == true)
+            {
+                wsHttpRequest = new WebService("getUser");
+                userDetails = wsHttpRequest.execute(username);
+                JSONObject userDetailsJsonObject = new JSONObject(userDetails);
+
+                ((MyApplication) getApplication()).setUserId(String.valueOf(userDetailsJsonObject.getInt("id")));
+            }
         } catch (Throwable e) {
             e.printStackTrace();
             Log.e("LoginActivity", e.getCause().toString());
@@ -322,10 +368,13 @@ public class LoginActivity extends ActionBarActivity {
 
         private final String mUsername;
         private final String mPassword;
+        private final Application mApplication;
 
-        UserLoginTask(String username, String password) {
+        UserLoginTask(String username, String password, Application application) {
             mUsername = username;
             mPassword = password;
+            mApplication = application;
+            ((MyApplication) mApplication).setUsername(mUsername);
         }
 
         @Override
@@ -372,7 +421,7 @@ public class LoginActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             try {
-                signUpWithFacebook(fbUserName.getFirstName(), fbUserName.getLastName(), fbUserName.getEmail(), fbUserName.getEmail(), fbUserName.getPassword(), "", fbUserName.getGender());
+                signUpWithFacebook(mFbUserName.getFirstName(), mFbUserName.getLastName(), mFbUserName.getEmail(), mFbUserName.getEmail(), mFbUserName.getPassword(), "", mFbUserName.getGender());
             } catch (Throwable e) {
                 e.printStackTrace();
                 Log.e("LoginActivity", e.getCause().toString());
@@ -387,10 +436,12 @@ public class LoginActivity extends ActionBarActivity {
     public class UserLoginWithFacebookAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         private final AccessToken mAccessToken;
+        private Application mApplication;
 
-        UserLoginWithFacebookAsyncTask(AccessToken accessToken)
+        UserLoginWithFacebookAsyncTask(AccessToken accessToken, Application application)
         {
             mAccessToken = accessToken;
+            mApplication = application;
         }
 
         @Override
@@ -401,7 +452,7 @@ public class LoginActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            UserLoginTask authTask = new UserLoginTask(fbUserName.getEmail(), fbUserName.getPassword());
+            UserLoginTask authTask = new UserLoginTask(mFbUserName.getEmail(), mFbUserName.getPassword(), mApplication);
             authTask.execute((Void) null);
         }
 

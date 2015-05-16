@@ -2,14 +2,12 @@ package com.sadna.app.findmyfriends;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -129,8 +127,9 @@ public class MapsActivity extends FragmentActivity implements
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
-            MarkerOptions options = new MarkerOptions().position(latLng).title("I am here!");
+            MarkerOptions options = new MarkerOptions().position(latLng).title(((MyApplication) getApplication()).getUsername());
             marker = mMap.addMarker(options);
+            marker.showInfoWindow();
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         }
     }
@@ -166,8 +165,9 @@ public class MapsActivity extends FragmentActivity implements
         double currentLongitude = location.getLongitude();
 
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        MarkerOptions options = new MarkerOptions().position(latLng).title("I am here!");
+        MarkerOptions options = new MarkerOptions().position(latLng).title(((MyApplication) getApplication()).getUsername());
         marker = mMap.addMarker(options);
+        marker.showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
