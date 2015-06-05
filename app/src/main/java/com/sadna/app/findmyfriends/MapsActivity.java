@@ -1,5 +1,6 @@
 package com.sadna.app.findmyfriends;
 
+import android.app.Application;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -8,9 +9,12 @@ import android.content.IntentSender;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,6 +27,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sadna.app.webservice.WebService;
+
+import org.json.JSONObject;
 
 public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -44,7 +51,10 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location location;
-
+    private USerLocationTask mAuthTask = null;
+    private String LocationToDb;
+    private double currentLatitude;
+    private double currentLongitude;
 
 
     @Override
@@ -59,7 +69,8 @@ public class MapsActivity extends FragmentActivity implements
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-
+            mAuthTask = new USerLocationTask(currentLatitude,currentLongitude, getApplication());
+            mAuthTask.execute((Void) null);
             // Create the LocationRequest object
             mLocationRequest = LocationRequest.create()
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -124,9 +135,9 @@ public class MapsActivity extends FragmentActivity implements
         Location location = locationManager.getLastKnownLocation(provider);
 
         if (location != null) {
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            LatLng latLng = new LatLng(latitude, longitude);
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+            LatLng latLng = new LatLng(currentLatitude, currentLongitude);
             MarkerOptions options = new MarkerOptions().position(latLng).title(((MyApplication) getApplication()).getUsername());
             marker = mMap.addMarker(options);
             marker.showInfoWindow();
@@ -161,14 +172,15 @@ public class MapsActivity extends FragmentActivity implements
         if (marker != null) {
             marker.remove();
         }
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         MarkerOptions options = new MarkerOptions().position(latLng).title(((MyApplication) getApplication()).getUsername());
         marker = mMap.addMarker(options);
         marker.showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mAuthTask = new USerLocationTask(currentLatitude,currentLongitude, getApplication());
+        mAuthTask.execute((Void) null);
     }
 
     @Override
@@ -260,6 +272,61 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
+    }
+
+
+    public class USerLocationTask extends AsyncTask<Void, Void, Boolean> {
+
+        private String mLatitude;
+        private String mLongitude;
+        private final Application mApplication;
+        private String mUsername;
+        private String mUserId;
+
+        USerLocationTask(double Latitude, double Longitude, Application application) {
+            mLatitude = Double.toString(Latitude);
+            mLongitude = Double.toString(Longitude);
+            mApplication = application;
+            mUsername = ((MyApplication) mApplication).getUsername();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return loginThroughWebService( mUsername, mLatitude ,mLongitude);
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+
+            if (success) {
+                finish();
+            } else {
+                Log.e("MapAct","failed to update location");
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+        }
+    }
+
+    protected boolean loginThroughWebService(String username, String Latitude ,String Longitude ) {
+        WebService wsHttpRequest = new WebService("checkUserDetails");
+        String result = null;
+
+        try {
+
+                wsHttpRequest = new WebService("setUserLocation");
+                wsHttpRequest.execute(username,Latitude,Longitude);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Log.e("LoginActivity", e.getCause().toString());
+            return false;
+        }
+
+        return Boolean.valueOf(result);
     }
 
 }

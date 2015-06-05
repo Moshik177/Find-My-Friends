@@ -5,6 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 
 import android.os.Build;
@@ -59,7 +62,8 @@ public class LoginActivity extends ActionBarActivity {
     private AccessTokenTracker mAccessTokenTracker;
     private LoginButton mLoginButton;
     private FbUserName mFbUserName;
-
+    private double currentLatitude;
+    private double currentLongitude;
     private SharedPreferences mSharedPref;
 
     private final String kUSERID = "fmf_login_userid";
@@ -150,13 +154,9 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     private void userGraphRequest(AccessToken accessToken) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                accessToken,
-                new GraphRequest.GraphJSONObjectCallback() {
+        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
                     @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
+                    public void onCompleted(JSONObject object, GraphResponse response) {
                         // Application code
                         Log.v("LoginActivity", response.toString());
                         try {
@@ -337,20 +337,25 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     protected boolean loginThroughWebService(String username, String password) {
-        WebService wsHttpRequest = new WebService("checkUserDetails");
+        WebService wsHttpRequestLogin = new WebService("checkUserDetails");
+        WebService wsHttpRequestlocation= new WebService("checkUserDetails");
         String result = null;
         String userDetails = null;
 
         try {
-            result = wsHttpRequest.execute(username, password);
+            result = wsHttpRequestLogin.execute(username, password);
             if (Boolean.valueOf(result) == true)
             {
-                wsHttpRequest = new WebService("getUser");
-                userDetails = wsHttpRequest.execute(username);
+                wsHttpRequestLogin = new WebService("getUser");
+                userDetails = wsHttpRequestLogin.execute(username);
                 JSONObject userDetailsJsonObject = new JSONObject(userDetails);
-
                 ((MyApplication) getApplication()).setUserId(String.valueOf(userDetailsJsonObject.getInt("id")));
+                wsHttpRequestlocation = new WebService("SetUserLocation");
+                String UserId =((MyApplication) getApplication()).getUserId();
+                getUserLocation();
+                userDetails = wsHttpRequestLogin.execute(username,Double.toString(currentLatitude),Double.toString(currentLongitude));
             }
+
         } catch (Throwable e) {
             e.printStackTrace();
             Log.e("LoginActivity", e.getCause().toString());
@@ -360,6 +365,20 @@ public class LoginActivity extends ActionBarActivity {
         return Boolean.valueOf(result);
     }
 
+
+    private void getUserLocation()
+    {
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        if (location != null) {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+    }
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
