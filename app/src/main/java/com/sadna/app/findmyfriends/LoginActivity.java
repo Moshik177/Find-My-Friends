@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,9 +30,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.sadna.app.gpstracker.LocationServiceManager;
 import com.sadna.app.webservice.WebService;
-
 import org.json.JSONObject;
 
 import java.math.BigInteger;
@@ -60,6 +59,7 @@ public class LoginActivity extends ActionBarActivity {
     private AccessTokenTracker mAccessTokenTracker;
     private LoginButton mLoginButton;
     private FbUserName mFbUserName;
+
     private SharedPreferences mSharedPref;
 
     private final String kUSERID = "fmf_login_userid";
@@ -74,7 +74,8 @@ public class LoginActivity extends ActionBarActivity {
 
         // Check if user already logged in from past times, if so, store username and id for rest of app use and go to groups activity
         String alreadyLoggedIn = mSharedPref.getString(kUSERID, "");
-        if (!alreadyLoggedIn.isEmpty()) {
+        if (!alreadyLoggedIn.isEmpty())
+        {
             // For debug - this cleans the logged in user details - should be when logging out
             /*
             SharedPreferences.Editor editor = mSharedPref.edit();
@@ -85,10 +86,11 @@ public class LoginActivity extends ActionBarActivity {
 
             ((MyApplication) getApplication()).setUserId(mSharedPref.getString(kUSERID, ""));
             ((MyApplication) getApplication()).setUsername(mSharedPref.getString(kUSERNAME, ""));
-            moveToMainPage();
+            moveToLoginGroup();
             finish();
             return;
-        } else {
+        }
+        else {
             mFbUserName = new FbUserName();
             mAccessTokenTracker = new AccessTokenTracker() {
                 @Override
@@ -144,27 +146,31 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     private void moveToMainPage() {
-        //startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 
     private void userGraphRequest(AccessToken accessToken) {
-        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                // Application code
-                Log.v("LoginActivity", response.toString());
-                try {
-                    String[] fullName = object.getString("name").split(" ");
-                    mFbUserName.setFirstName(fullName[0]);
-                    mFbUserName.setLastName(fullName[1]);
-                    mFbUserName.setEmail(object.getString("email"));
-                    mFbUserName.setPassword(hashString(mFbUserName.getEmail()));
-                    mFbUserName.setGender(object.getString("gender").substring(0, 1).toUpperCase() + object.getString("gender").substring(1));
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        GraphRequest request = GraphRequest.newMeRequest(
+                accessToken,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        // Application code
+                        Log.v("LoginActivity", response.toString());
+                        try {
+                            String[] fullName = object.getString("name").split(" ");
+                            mFbUserName.setFirstName(fullName[0]);
+                            mFbUserName.setLastName(fullName[1]);
+                            mFbUserName.setEmail(object.getString("email"));
+                            mFbUserName.setPassword(hashString(mFbUserName.getEmail()));
+                            mFbUserName.setGender(object.getString("gender").substring(0, 1).toUpperCase() + object.getString("gender").substring(1));
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id, name, email, gender");
         request.setParameters(parameters);
@@ -314,6 +320,9 @@ public class LoginActivity extends ActionBarActivity {
     public void moveToSignUpActivity(View view) {
         startActivity(new Intent(getApplicationContext(), SignupActivity.class));
     }
+    private void moveToLoginGroup() {
+        startActivity(new Intent(getApplicationContext(), LoginGroupActivity.class));
+    }
 
     private void successLogin() {
         SharedPreferences.Editor editor = mSharedPref.edit();
@@ -323,13 +332,7 @@ public class LoginActivity extends ActionBarActivity {
         editor.putString(kUSERNAME, ((MyApplication) getApplication()).getUsername());
         editor.commit();
 
-        Intent i = new Intent(LoginActivity.this, LocationServiceManager.class);
-        startService(i);
-
-        Intent intent = new Intent("SystemState");
-        sendBroadcast(intent);
-
-        moveToMainPage();
+        moveToLoginGroup();
     }
 
     private void failedLogin() {
@@ -343,7 +346,8 @@ public class LoginActivity extends ActionBarActivity {
 
         try {
             result = wsHttpRequest.execute(username, password);
-            if (Boolean.valueOf(result) == true) {
+            if (Boolean.valueOf(result) == true)
+            {
                 wsHttpRequest = new WebService("getUser");
                 userDetails = wsHttpRequest.execute(username);
                 JSONObject userDetailsJsonObject = new JSONObject(userDetails);
@@ -406,7 +410,8 @@ public class LoginActivity extends ActionBarActivity {
 
         private final AccessToken mAccessToken;
 
-        SignUpWithFacebookAsyncTask(AccessToken accessToken) {
+        SignUpWithFacebookAsyncTask(AccessToken accessToken)
+        {
             mAccessToken = accessToken;
         }
 
@@ -436,7 +441,8 @@ public class LoginActivity extends ActionBarActivity {
         private final AccessToken mAccessToken;
         private Application mApplication;
 
-        UserLoginWithFacebookAsyncTask(AccessToken accessToken, Application application) {
+        UserLoginWithFacebookAsyncTask(AccessToken accessToken, Application application)
+        {
             mAccessToken = accessToken;
             mApplication = application;
         }

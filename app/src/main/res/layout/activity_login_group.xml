@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/logGroup"
+    android:background="@android:color/holo_blue_light"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/title_activity_login_group"
+        android:id="@+id/textView1"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:layout_gravity="center_horizontal" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="433dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView2"
+            android:layout_weight="0.80"
+            android:fillViewport="false">
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="403dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:id="@+id/group_table"
+                android:clickable="false"></TableLayout>
+        </ScrollView>
+    </FrameLayout>
+
+    <Button
+        style="?android:textAppearanceSmall"
+        android:id="@+id/add_group_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/addGroupButton"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"
+        android:layout_marginBottom="16dp" />
+
+</LinearLayout>

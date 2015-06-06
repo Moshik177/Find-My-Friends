@@ -3,10 +3,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_sign_up">Sign up</string>
+    <string name="title_activity_login_group">choose group</string>
     <string name="sign_up">\nSign Up For FindMyFriends</string>
     <string name="title_activity_signup">Sign Up</string>
     <string name="firstNameField">First Name</string>
     <string name="lastNameField">Last Name</string>
+    <string name="newGroupNameField">insert group name</string>
     <string name="emailField">Email</string>
     <string name="usernameField">Username</string>
     <string name="passwordField">Password</string>
@@ -14,5 +16,9 @@
     <string name="maleButton">Male</string>
     <string name="femaleButton">Female</string>
     <string name="signUpButton">Sign up</string>
+    <string name="addGroupButton">add group</string>
     <string name="facebook_app_id">412942522220397</string>
+    <string name="title_activity_create_new_group">CreateNewGroupActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

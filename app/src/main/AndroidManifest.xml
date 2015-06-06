@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sadna.app.findmyfriends"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -29,9 +29,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.sadna.app.findmyfriends.android.locationapi.maps.permission.MAPS_RECEIVE" />
 
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
-        android:name="MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -66,7 +70,6 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
-
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
@@ -75,14 +78,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.sadna.app.findmyfriends.WelcomeScreenActivity" />
         </activity>
+        <activity
+            android:name=".LoginGroupActivity"
+            android:label="@string/title_activity_login_group"
+            android:parentActivityName=".SignupActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sadna.app.findmyfriends.SignupActivity" />
+        </activity>
+        <activity
+            android:name=".CreateNewGroupActivity"
+            android:label="@string/title_activity_create_new_group"
+            android:parentActivityName=".LoginGroupActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sadna.app.findmyfriends.LoginGroupActivity" />
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
         <meta-data
-            android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
     </application>
 
