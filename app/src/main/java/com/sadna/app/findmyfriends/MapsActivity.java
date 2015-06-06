@@ -18,16 +18,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity {
 
-    public static final String TAG = MapsActivity.class.getSimpleName();
     /*
      * Define a request code to send to Google Play services
      * This code is returned in Activity.onActivityResult
      */
-
-
     private static int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private static final int REQUEST_RESOLVE_ERROR = 1001;
     private Marker marker;
     private double currentLatitude;
     private double currentLongitude;
