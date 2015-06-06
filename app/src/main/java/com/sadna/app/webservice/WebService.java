@@ -61,6 +61,9 @@ public class WebService {
         {
             return this.methodName;
         }
-        else return resultsRequestSOAP.toString();
+        else
+        {
+            return resultsRequestSOAP.toString();
+        }
     }
 }
