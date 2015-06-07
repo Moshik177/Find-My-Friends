@@ -42,11 +42,13 @@
     <Button
         style="?android:textAppearanceSmall"
         android:id="@+id/add_group_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:text="@string/addGroupButton"
         android:textStyle="bold"
         android:textColor="@android:color/holo_orange_light"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:onClick="addGroup" />
 
 </LinearLayout>

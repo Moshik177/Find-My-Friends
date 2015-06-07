@@ -86,7 +86,7 @@ public class LoginActivity extends ActionBarActivity {
 
             ((MyApplication) getApplication()).setUserId(mSharedPref.getString(kUSERID, ""));
             ((MyApplication) getApplication()).setUsername(mSharedPref.getString(kUSERNAME, ""));
-            moveToLoginGroup();
+            moveToGroupsMainActivity();
             finish();
             return;
         }
@@ -143,10 +143,6 @@ public class LoginActivity extends ActionBarActivity {
             mLoginFormView = findViewById(R.id.login_form);
             mProgressView = findViewById(R.id.login_progress);
         }
-    }
-
-    private void moveToMainPage() {
-        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 
     private void userGraphRequest(AccessToken accessToken) {
@@ -320,8 +316,8 @@ public class LoginActivity extends ActionBarActivity {
     public void moveToSignUpActivity(View view) {
         startActivity(new Intent(getApplicationContext(), SignupActivity.class));
     }
-    private void moveToLoginGroup() {
-        startActivity(new Intent(getApplicationContext(), LoginGroupActivity.class));
+    private void moveToGroupsMainActivity() {
+        startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));
     }
 
     private void successLogin() {
@@ -332,7 +328,7 @@ public class LoginActivity extends ActionBarActivity {
         editor.putString(kUSERNAME, ((MyApplication) getApplication()).getUsername());
         editor.commit();
 
-        moveToLoginGroup();
+        moveToGroupsMainActivity();
     }
 
     private void failedLogin() {

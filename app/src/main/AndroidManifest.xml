@@ -79,7 +79,7 @@
                 android:value="com.sadna.app.findmyfriends.WelcomeScreenActivity" />
         </activity>
         <activity
-            android:name=".LoginGroupActivity"
+            android:name=".GroupsMainActivity"
             android:label="@string/title_activity_login_group"
             android:parentActivityName=".SignupActivity" >
             <meta-data
@@ -89,10 +89,10 @@
         <activity
             android:name=".CreateNewGroupActivity"
             android:label="@string/title_activity_create_new_group"
-            android:parentActivityName=".LoginGroupActivity" >
+            android:parentActivityName=".GroupsMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sadna.app.findmyfriends.LoginGroupActivity" />
+                android:value=".GroupsMainActivity" />
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"

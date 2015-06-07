@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_sign_up">Sign up</string>
-    <string name="title_activity_login_group">choose group</string>
+    <string name="title_activity_login_group">Groups</string>
     <string name="sign_up">\nSign Up For FindMyFriends</string>
     <string name="title_activity_signup">Sign Up</string>
     <string name="firstNameField">First Name</string>
