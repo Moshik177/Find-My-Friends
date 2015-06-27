@@ -1,4 +1,4 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.sadna.app.findmyfriends.BaseActivity;
+import com.sadna.app.findmyfriends.R;
+import com.sadna.app.findmyfriends.forms.SignUpForm;
 import com.sadna.app.webservice.WebService;
 
 import java.text.SimpleDateFormat;
@@ -25,7 +28,7 @@ import java.util.Date;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-public class SignupActivity extends ActionBarActivity {
+public class SignupActivity extends BaseActivity {
 
     private static final int USER_ALREADY_EXISTS = 1;
     private Calendar mCalendar = Calendar.getInstance();

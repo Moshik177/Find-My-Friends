@@ -1,4 +1,4 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.forms;
 
 /**
  * Created by gabi on 01/06/2015.

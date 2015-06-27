@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sadna.app.findmyfriends"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -39,10 +39,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".WelcomeScreenActivity"
-            android:label="@string/app_name" >
+            android:name=".activities.WelcomeScreenActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,13 +50,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".WelcomeScreenActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:parentActivityName=".activities.WelcomeScreenActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sadna.app.findmyfriends.WelcomeScreenActivity" />
+                android:value=".activities.WelcomeScreenActivity" />
         </activity>
 
         <meta-data
@@ -67,32 +67,31 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
-        </activity>
+            android:name=".activities.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
         <activity
-            android:name=".SignupActivity"
+            android:name=".activities.SignupActivity"
             android:label="@string/title_activity_signup"
-            android:parentActivityName=".WelcomeScreenActivity" >
+            android:parentActivityName=".activities.WelcomeScreenActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sadna.app.findmyfriends.WelcomeScreenActivity" />
+                android:value=".activities.WelcomeScreenActivity" />
         </activity>
         <activity
-            android:name=".GroupsMainActivity"
+            android:name=".activities.GroupsMainActivity"
             android:label="@string/title_activity_login_group"
-            android:parentActivityName=".SignupActivity" >
+            android:parentActivityName=".activities.SignupActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sadna.app.findmyfriends.SignupActivity" />
+                android:value=".activities.SignupActivity" />
         </activity>
         <activity
-            android:name=".CreateNewGroupActivity"
+            android:name=".activities.CreateNewGroupActivity"
             android:label="@string/title_activity_create_new_group"
-            android:parentActivityName=".GroupsMainActivity" >
+            android:parentActivityName=".activities.GroupsMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".GroupsMainActivity" />
+                android:value=".activities.GroupsMainActivity" />
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -103,6 +102,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <service
+            android:name="com.sadna.app.gpstracker.LocationServiceManager"
+            android:enabled="true"></service>
 
     </application>
 

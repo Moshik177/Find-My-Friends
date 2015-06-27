@@ -1,4 +1,4 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.forms;
 
 /**
  * Created by avihoo on 18/04/2015.

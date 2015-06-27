@@ -1,6 +1,5 @@
 package com.sadna.app.gpstracker;
 
-import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
@@ -21,8 +20,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.sadna.app.findmyfriends.MyApplication;
 import com.sadna.app.webservice.WebService;
-
-import org.json.JSONObject;
 
 public class LocationServiceManager extends Service implements
         LocationListener, ConnectionCallbacks, OnConnectionFailedListener {
@@ -65,16 +62,17 @@ public class LocationServiceManager extends Service implements
             i = new Intent(TAG);
             if (mGoogleApiClient != null) {
                 mGoogleApiClient.connect();
-                sendLocation();
+                sendLocation(true);
             }
         }
         return START_STICKY;
     }
 
-    private void sendLocation() {
-
-        mLastLocation = LocationServices.FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
+    private void sendLocation(boolean usedLastKnownLocation) {
+        if (usedLastKnownLocation) {
+            mLastLocation = LocationServices.FusedLocationApi
+                    .getLastLocation(mGoogleApiClient);
+        }
 
         if (mLastLocation != null) {
             double latitude = mLastLocation.getLatitude();
@@ -82,19 +80,19 @@ public class LocationServiceManager extends Service implements
 
             SendLocationAsyncTask sendLocationTask = new SendLocationAsyncTask(((MyApplication) getApplication()).getUsername(), String.valueOf(latitude), String.valueOf(longitude));
             sendLocationTask.execute((Void) null);
-            togglePeriodicLocationUpdates();
         } else {
             Log.e(TAG, "Failed get last know location");
         }
+        togglePeriodicLocationUpdates();
     }
 
     private void togglePeriodicLocationUpdates() {
-        if (!mRequestingLocationUpdates) {
-            mRequestingLocationUpdates = true;
-            startLocationUpdates();
-
+        if (mGoogleApiClient.isConnected()) {
+            if (!mRequestingLocationUpdates) {
+                mRequestingLocationUpdates = true;
+                startLocationUpdates();
+            }
         }
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -129,10 +127,8 @@ public class LocationServiceManager extends Service implements
     }
 
     protected void startLocationUpdates() {
-
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
-
     }
 
     protected void stopLocationUpdates() {
@@ -149,7 +145,7 @@ public class LocationServiceManager extends Service implements
     @Override
     public void onConnected(Bundle bundle) {
 
-        sendLocation();
+        sendLocation(true);
 
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -164,7 +160,7 @@ public class LocationServiceManager extends Service implements
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
-        sendLocation();
+        sendLocation(false);
     }
 
     @Override
@@ -179,17 +175,16 @@ public class LocationServiceManager extends Service implements
 
     protected boolean sendLocationToWebService(String username, String latitude, String longitude) {
         WebService wsHttpRequest = new WebService("setUserLocation");
-        String result = null;
 
         try {
-            result = wsHttpRequest.execute(username, latitude, longitude);
+            wsHttpRequest.execute(username, latitude, longitude);
         } catch (Throwable e) {
             e.printStackTrace();
             Log.e(TAG, e.getCause().toString());
             return false;
         }
 
-        return Boolean.valueOf(result);
+        return true;
     }
 
     public class SendLocationAsyncTask extends AsyncTask<Void, Void, Boolean> {

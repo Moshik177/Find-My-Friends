@@ -1,7 +1,9 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.utils;
 import android.os.AsyncTask;
 
-import static com.sadna.app.findmyfriends.SignupActivity.signUpUser;
+import com.sadna.app.findmyfriends.forms.SignUpForm;
+
+import static com.sadna.app.findmyfriends.activities.SignupActivity.signUpUser;
 
 /**
  * Created by avihoo on 18/04/2015.
@@ -10,7 +12,7 @@ public class FacebookSignUpTask extends AsyncTask<Void, Void, Boolean> {
 
     private SignUpForm mSignUpForm;
 
-    FacebookSignUpTask(SignUpForm signUpForm) {
+    public FacebookSignUpTask(SignUpForm signUpForm) {
         mSignUpForm = signUpForm;
     }
 

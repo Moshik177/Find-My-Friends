@@ -22,21 +22,16 @@
         android:layout_width="fill_parent"
         android:layout_height="433dp">
 
-        <ScrollView
-            android:layout_width="match_parent"
+        <ListView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollView2"
-            android:layout_weight="0.80"
-            android:fillViewport="false">
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="403dp"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:id="@+id/group_table"
-                android:clickable="false"></TableLayout>
-        </ScrollView>
+            android:id="@+id/groupsListView"
+            android:layout_gravity="left|bottom"
+            android:choiceMode="singleChoice"
+            android:clickable="true"
+            android:scrollingCache="false"
+            android:smoothScrollbar="true"
+            android:textFilterEnabled="true" />
     </FrameLayout>
 
     <Button
@@ -47,7 +42,6 @@
         android:text="@string/addGroupButton"
         android:textStyle="bold"
         android:textColor="@android:color/holo_orange_light"
-        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:onClick="addGroup" />
 

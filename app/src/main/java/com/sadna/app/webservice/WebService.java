@@ -56,7 +56,11 @@ public class WebService {
         envelope.setOutputSoapObject(request);
         HttpTransportSE androidHttpTransport = new HttpTransportSE(this.url, TIMEOUT_IN_MILLISECONDS);
         androidHttpTransport.call(this.soapAction, envelope);
-        SoapPrimitive  resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
-        return resultsRequestSOAP.toString();
+        SoapPrimitive resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
+        if (resultsRequestSOAP != null)
+        {
+            return resultsRequestSOAP.toString();
+        }
+        return null;
     }
 }

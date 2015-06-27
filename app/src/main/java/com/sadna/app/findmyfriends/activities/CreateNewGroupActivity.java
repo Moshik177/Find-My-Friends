@@ -1,4 +1,4 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +10,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import com.sadna.app.findmyfriends.BaseActivity;
+import com.sadna.app.findmyfriends.MyApplication;
+import com.sadna.app.findmyfriends.R;
+import com.sadna.app.findmyfriends.forms.GroupCreationForm;
 import com.sadna.app.webservice.WebService;
 
 /**
@@ -17,7 +21,7 @@ import com.sadna.app.webservice.WebService;
  */
 
 
-public class CreateNewGroupActivity extends ActionBarActivity {
+public class CreateNewGroupActivity extends BaseActivity {
     /*Data Members*/
     private static final int GROUP_ERROR = 1;
     GroupCreationTask mGroupCreationTask = null;

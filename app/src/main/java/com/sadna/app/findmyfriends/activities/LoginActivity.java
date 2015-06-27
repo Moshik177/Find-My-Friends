@@ -1,4 +1,4 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -30,6 +30,13 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.sadna.app.findmyfriends.BaseActivity;
+import com.sadna.app.findmyfriends.utils.FacebookSignUpTask;
+import com.sadna.app.findmyfriends.MyApplication;
+import com.sadna.app.findmyfriends.R;
+import com.sadna.app.findmyfriends.entities.FbUserName;
+import com.sadna.app.findmyfriends.forms.SignUpForm;
+import com.sadna.app.gpstracker.LocationServiceManager;
 import com.sadna.app.webservice.WebService;
 import org.json.JSONObject;
 
@@ -42,7 +49,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * A login screen that offers login via username and password.
  */
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends BaseActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -76,14 +83,6 @@ public class LoginActivity extends ActionBarActivity {
         String alreadyLoggedIn = mSharedPref.getString(kUSERID, "");
         if (!alreadyLoggedIn.isEmpty())
         {
-            // For debug - this cleans the logged in user details - should be when logging out
-            /*
-            SharedPreferences.Editor editor = mSharedPref.edit();
-            editor.remove(kUSERID);
-            editor.remove(kUSERNAME);
-            editor.commit();
-            */
-
             ((MyApplication) getApplication()).setUserId(mSharedPref.getString(kUSERID, ""));
             ((MyApplication) getApplication()).setUsername(mSharedPref.getString(kUSERNAME, ""));
             moveToGroupsMainActivity();
@@ -317,6 +316,9 @@ public class LoginActivity extends ActionBarActivity {
         startActivity(new Intent(getApplicationContext(), SignupActivity.class));
     }
     private void moveToGroupsMainActivity() {
+        // use this to start and trigger a service
+        Intent gpsUpdatesIntent = new Intent(getApplicationContext(), LocationServiceManager.class);
+        getApplicationContext().startService(gpsUpdatesIntent);
         startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));
     }
 

@@ -1,35 +1,28 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.activities;
 
 import android.content.Intent;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.sadna.app.findmyfriends.BaseActivity;
+import com.sadna.app.findmyfriends.R;
+
 /**
  * A login screen that offers login via username and password.
  */
-public class GroupsMainActivity extends ActionBarActivity {
-
-    private Button mAddGroupButton;
-    private TableLayout mGroupTable;
+public class GroupsMainActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_main);
-
-        mAddGroupButton = (Button) findViewById(R.id.add_group_button);
-        mGroupTable = (TableLayout) findViewById(R.id.group_table);
     }
-    private void addGroup()
-    {
-        TableRow newGroup = new TableRow(this);
-        Button groupButton = new Button(this);
-        groupButton.setText("hello from new group");
-        newGroup.addView(groupButton);
-        mGroupTable.addView(newGroup);
+
+    public void addGroup(View view) {
         moveToCreateNewGroupActivity();
     }
 

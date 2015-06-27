@@ -1,4 +1,4 @@
-package com.sadna.app.findmyfriends;
+package com.sadna.app.findmyfriends.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -6,8 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
+import com.sadna.app.findmyfriends.BaseActivity;
+import com.sadna.app.findmyfriends.R;
 
-public class WelcomeScreenActivity extends ActionBarActivity {
+
+public class WelcomeScreenActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

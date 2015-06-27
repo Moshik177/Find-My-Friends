@@ -1,5 +1,5 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:id="@+id/map"
-    tools:context="com.sadna.app.findmyfriends.MapsActivity"
+    tools:context="com.sadna.app.findmyfriends.activities.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment" />
