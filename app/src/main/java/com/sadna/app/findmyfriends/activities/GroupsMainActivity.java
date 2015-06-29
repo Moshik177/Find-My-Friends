@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -36,6 +37,15 @@ public class GroupsMainActivity extends BaseActivity {
 
         // Find the ListView resource.
         userGroupsListView = (ListView) findViewById(R.id.groupsListView);
+
+        userGroupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Group currentSelectedGroup = (Group) userGroupsListView.getItemAtPosition(position);
+                ((MyApplication)getApplication()).setSelectedGroupId(currentSelectedGroup.getId());
+                ((MyApplication)getApplication()).setSelectedGroupName(currentSelectedGroup.getName());
+            }
+        });
 
         // Create ArrayAdapter using the planet list.
         listViewAdapter = new ArrayAdapter<>(this, R.layout.group_row, userGroups);
