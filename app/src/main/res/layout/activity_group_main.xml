@@ -1,48 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/logGroup"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@android:color/holo_blue_light"
-    android:weightSum="1">
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:baselineAligned="false"
+    android:divider="@android:drawable/divider_horizontal_textfield"
+    android:showDividers="middle|beginning">
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_horizontal"
+        android:elegantTextHeight="false"
         android:text="@string/title_activity_login_group"
-        android:id="@+id/textView1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/holo_orange_light"
         android:textSize="@dimen/abc_text_size_display_1_material"
         android:textStyle="bold"
-        android:typeface="sans"
-        android:layout_gravity="center_horizontal" />
+        android:typeface="sans" />
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="433dp">
 
         <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/groupsListView"
-            android:layout_gravity="left|bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|left"
             android:choiceMode="singleChoice"
             android:clickable="true"
+            android:divider="@android:drawable/divider_horizontal_textfield"
+            android:dividerHeight="3px"
+            android:drawSelectorOnTop="false"
+            android:fastScrollAlwaysVisible="false"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
             android:scrollingCache="false"
             android:smoothScrollbar="true"
-            android:textFilterEnabled="true" />
+            android:stackFromBottom="false"
+            android:textAlignment="textStart"
+            android:textFilterEnabled="true"
+            android:visibility="visible" />
     </FrameLayout>
 
     <Button
-        style="?android:textAppearanceSmall"
         android:id="@+id/add_group_button"
-        android:layout_width="fill_parent"
+        style="@style/Base.Widget.AppCompat.Button"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:text="@string/addGroupButton"
-        android:textStyle="bold"
-        android:textColor="@android:color/holo_orange_light"
+        android:capitalize="sentences"
         android:clickable="true"
-        android:onClick="addGroup" />
+        android:elegantTextHeight="false"
+        android:onClick="addGroup"
+        android:singleLine="false"
+        android:text="@string/addGroupButton"
+        android:textColor="@android:color/holo_orange_light"
+        android:textStyle="bold"
+        android:textSize="20dp" />
 
 </LinearLayout>

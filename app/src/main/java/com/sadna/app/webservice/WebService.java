@@ -8,6 +8,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Created by avihoo on 14/03/2015.
