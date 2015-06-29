@@ -38,6 +38,7 @@ public class GroupsMainActivity extends BaseActivity {
         // Find the ListView resource.
         userGroupsListView = (ListView) findViewById(R.id.groupsListView);
 
+        // On item clicked set selected group name and id in myapp
         userGroupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -53,7 +54,6 @@ public class GroupsMainActivity extends BaseActivity {
         // Set the ArrayAdapter as the ListView's adapter.
         userGroupsListView.setAdapter(listViewAdapter);
 
-        // on item clicked set selected group name and id in myapplication
     }
 
     private void getUserGroups() {
