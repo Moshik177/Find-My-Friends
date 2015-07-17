@@ -2,7 +2,7 @@ package com.sadna.app.findmyfriends;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,7 +13,7 @@ import com.sadna.app.findmyfriends.activities.LoginActivity;
 /**
  * Created by avihoo on 26/06/2015.
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
 
     private final String kUSERID = "fmf_login_userid";
     private final String kUSERNAME = "fmf_login_username";
@@ -24,7 +24,7 @@ public class BaseActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         mSharedPref = getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0); // 0 - for private mode;
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

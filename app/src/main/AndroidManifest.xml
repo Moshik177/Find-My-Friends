@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sadna.app.findmyfriends"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="10"
+        android:targetSdkVersion="13" />
 
     <permission
         android:name="com.sadna.app.findmyfriends.android.locationapi.maps.permission.MAPS_RECEIVE"
@@ -28,18 +28,18 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.sadna.app.findmyfriends.android.locationapi.maps.permission.MAPS_RECEIVE" />
-
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.WelcomeScreenActivity"
             android:label="@string/app_name">
@@ -53,7 +53,7 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".activities.WelcomeScreenActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible">
+            android:windowSoftInputMode="adjustResize|stateVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.WelcomeScreenActivity" />
@@ -68,11 +68,11 @@
 
         <activity
             android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".activities.SignupActivity"
             android:label="@string/title_activity_signup"
-            android:parentActivityName=".activities.WelcomeScreenActivity">
+            android:parentActivityName=".activities.WelcomeScreenActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.WelcomeScreenActivity" />
@@ -80,7 +80,7 @@
         <activity
             android:name=".activities.GroupsMainActivity"
             android:label="@string/title_activity_login_group"
-            android:parentActivityName=".activities.SignupActivity">
+            android:parentActivityName=".activities.SignupActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.SignupActivity" />
@@ -88,7 +88,7 @@
         <activity
             android:name=".activities.CreateNewGroupActivity"
             android:label="@string/title_activity_create_new_group"
-            android:parentActivityName=".activities.GroupsMainActivity">
+            android:parentActivityName=".activities.GroupsMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.GroupsMainActivity" />
@@ -105,8 +105,17 @@
 
         <service
             android:name="com.sadna.app.gpstracker.LocationServiceManager"
-            android:enabled="true"></service>
+            android:enabled="true" />
 
+        <activity
+            android:name=".activities.PhoneVerificationSendActivity"
+            android:label="@string/title_activity_phone_verification_send">
+        </activity>
+
+        <activity
+            android:name=".activities.PhoneVerificationVerifyActivity"
+            android:label="@string/title_activity_phone_verification_send">
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.sadna.app.findmyfriends.activities;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,10 +13,13 @@ import com.sadna.app.findmyfriends.R;
 
 public class WelcomeScreenActivity extends BaseActivity {
 
+    private SharedPreferences mSharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSharedPref = getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0); // 0 - for private mode;
 
         /** set time to splash out */
         final int welcomeScreenDisplay = 3000;
@@ -43,35 +47,16 @@ public class WelcomeScreenActivity extends BaseActivity {
                         * Called after splash times up. Do some action after splash
                         * times up. Here we moved to another main activity class
                     */
-                    startActivity(new Intent(getApplicationContext(),
-                            LoginActivity.class));
+                    if (!mSharedPref.getBoolean("phone_activated", false)) {
+                        startActivity(new Intent(getApplicationContext(), PhoneVerificationSendActivity.class));
+                    }
+                    else {
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    }
                     finish();
                 }
             }
         };
         welcomeThread.start();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

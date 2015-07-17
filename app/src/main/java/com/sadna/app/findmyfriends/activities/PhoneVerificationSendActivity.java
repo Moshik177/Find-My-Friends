@@ -1,0 +1,54 @@
+package com.sadna.app.findmyfriends.activities;
+
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.EditText;
+
+import com.sadna.app.findmyfriends.BaseActivity;
+import com.sadna.app.findmyfriends.R;
+
+import java.util.Random;
+
+public class PhoneVerificationSendActivity extends BaseActivity {
+
+    private SharedPreferences mSharedPref;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_phone_verification_send);
+    }
+
+    public void sendSmsAndMoveToVerifyActivity(View view)
+    {
+        mSharedPref = getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0); // 0 - for private mode;
+        String phoneNumber = ((EditText) findViewById(R.id.phone_number_textbox)).getText().toString();
+        String verificationCode = generateVerificationCode();
+        String message = "Your verification code for FindMyFriends is: " + verificationCode;
+
+        SharedPreferences.Editor editor = mSharedPref.edit();
+        editor.putString("verify_phoneNumber", phoneNumber);
+        editor.putString("verify_code", verificationCode);
+        editor.commit();
+        sendSMS(PhoneNumberUtils.formatNumber(phoneNumber), message);
+        startActivity(new Intent(getApplicationContext(), PhoneVerificationVerifyActivity.class));
+        finish();
+    }
+
+    private void sendSMS(String phoneNumber, String message)
+    {
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, null, null);
+    }
+
+    private String generateVerificationCode()
+    {
+        Random r = new Random( System.currentTimeMillis() );
+        return Integer.toString(r.nextInt(10000) + 10000); // for getting 5 digits number
+    }
+}

@@ -11,8 +11,8 @@ android {
     buildToolsVersion "22"
     defaultConfig {
         applicationId "com.sadna.app.findmyfriends"
-        minSdkVersion 15
-        targetSdkVersion 21
+        minSdkVersion 11
+        targetSdkVersion 13
         versionCode 1
         versionName "1.0"
     }
@@ -26,9 +26,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:7.5.0'
     compile files('libs/javax.mail.jar')
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile 'org.json:json:20141113'
+    compile 'com.android.support:support-v4:22.2.0'
 }

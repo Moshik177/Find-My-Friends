@@ -3,7 +3,7 @@
     android:id="@+id/logGroup"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/holo_blue_light"
+    android:background="@color/holo_blue_light"
     android:orientation="vertical"
     android:weightSum="1"
     android:baselineAligned="false"
@@ -18,7 +18,7 @@
         android:elegantTextHeight="false"
         android:text="@string/title_activity_login_group"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/holo_orange_light"
+        android:textColor="@color/holo_orange_light"
         android:textSize="@dimen/abc_text_size_display_1_material"
         android:textStyle="bold"
         android:typeface="sans" />
@@ -59,7 +59,7 @@
         android:onClick="addGroup"
         android:singleLine="false"
         android:text="@string/addGroupButton"
-        android:textColor="@android:color/holo_orange_light"
+        android:textColor="@color/holo_orange_light"
         android:textStyle="bold"
         android:textSize="20dp" />
 

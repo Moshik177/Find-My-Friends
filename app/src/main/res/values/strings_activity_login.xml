@@ -14,4 +14,5 @@
     <string name="error_field_required">This field is required</string>
     <string name="error_user_already_exists">Username already exists</string>
     <string name="error_login_fb_error">\nOops.. error during login</string>
+    <string name="error_verify_wrong_code">\nVerification code is incorrect</string>
 </resources>

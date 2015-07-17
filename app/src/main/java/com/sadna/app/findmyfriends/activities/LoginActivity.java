@@ -84,7 +84,7 @@ public class LoginActivity extends BaseActivity {
         {
             ((MyApplication) getApplication()).setUserId(mSharedPref.getString(kUSERID, ""));
             ((MyApplication) getApplication()).setUsername(mSharedPref.getString(kUSERNAME, ""));
-            moveToGroupsMainActivity();
+            startGpsUpdateAndMoveToGroupsMainActivity();
             finish();
             return;
         }
@@ -118,7 +118,6 @@ public class LoginActivity extends BaseActivity {
                             Log.e("LoginActivity", exception.getCause().toString());
                         }
                     });
-
             updateWithToken(AccessToken.getCurrentAccessToken());
             mLoginButton = (LoginButton) findViewById(R.id.login_button);
             mLoginButton.setReadPermissions(Arrays.asList("public_profile, email"));
@@ -314,7 +313,8 @@ public class LoginActivity extends BaseActivity {
     public void moveToSignUpActivity(View view) {
         startActivity(new Intent(getApplicationContext(), SignupActivity.class));
     }
-    private void moveToGroupsMainActivity() {
+
+    private void startGpsUpdateAndMoveToGroupsMainActivity() {
         // use this to start and trigger a service
         Intent gpsUpdatesIntent = new Intent(getApplicationContext(), LocationServiceManager.class);
         getApplicationContext().startService(gpsUpdatesIntent);
@@ -329,7 +329,7 @@ public class LoginActivity extends BaseActivity {
         editor.putString(kUSERNAME, ((MyApplication) getApplication()).getUsername());
         editor.commit();
 
-        moveToGroupsMainActivity();
+        startGpsUpdateAndMoveToGroupsMainActivity();
     }
 
     private void failedLogin() {

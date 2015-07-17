@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@android:color/holo_blue_light"
+    android:background="@color/holo_blue_light"
     tools:context="com.sadna.app.findmyfriends.activities.SignupActivity"
     android:focusableInTouchMode="true">
 
@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/title_activity_sign_up"
         android:id="@+id/textView"
-        android:textColor="@android:color/holo_orange_light"
+        android:textColor="@color/holo_orange_light"
         android:textSize="@dimen/abc_text_size_display_1_material"
         android:textStyle="bold"
         android:typeface="sans"
@@ -40,7 +40,7 @@
                 android:id="@+id/firstNameText"
                 android:maxLength="255"
                 android:singleLine="true"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 android:hint="@string/firstNameField" />
 
             <EditText
@@ -49,7 +49,7 @@
                 android:id="@+id/lastNameText"
                 android:singleLine="true"
                 android:maxLength="255"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 android:hint="@string/lastNameField" />
 
             <EditText
@@ -59,7 +59,7 @@
                 android:maxLength="255"
                 android:singleLine="true"
                 android:inputType="textEmailAddress"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 android:hint="@string/emailField" />
 
             <EditText
@@ -68,7 +68,7 @@
                 android:id="@+id/userNameText"
                 android:maxLength="30"
                 android:singleLine="true"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 android:hint="@string/usernameField" />
 
             <EditText
@@ -80,7 +80,7 @@
                 android:password="false"
                 android:selectAllOnFocus="true"
                 android:inputType="textPassword"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 android:hint="@string/passwordField" />
 
             <EditText
@@ -92,7 +92,7 @@
                 android:clickable="true"
                 android:enabled="true"
                 android:onClick="birthDatePicker"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 android:focusableInTouchMode="false" />
 
             <RadioGroup
@@ -126,7 +126,7 @@
                 android:id="@+id/signUpButton"
                 android:enabled="true"
                 android:layout_gravity="center_horizontal"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="@color/holo_orange_light"
                 style="?android:textAppearanceSmall"
                 android:textStyle="bold"
                 android:onClick="attemptSignUp"

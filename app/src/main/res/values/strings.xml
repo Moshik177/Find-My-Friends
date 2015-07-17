@@ -20,4 +20,11 @@
     <string name="facebook_app_id">412942522220397</string>
     <string name="title_activity_create_new_group">CreateNewGroupActivity</string>
     <string name="logout">Log out</string>
+    <string name="phone_verification">Phone Verification</string>
+    <string name="phone_verification_subtitle">\n\nVerify Your Phone Number</string>
+    <string name="phone_verification_body">\n\nFindMyFriends will send you one SMS message to verify your phone number. To verify yourself, please enter your phone number:\n\n</string>
+    <string name="phone_verification_verify_body">\n\nPlease enter the verification code you got for FindMyFriends:\n\n</string>
+    <string name="title_activity_phone_verification_send">PhoneVerificationSend</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="verify">Verify my phone</string>
 </resources>
