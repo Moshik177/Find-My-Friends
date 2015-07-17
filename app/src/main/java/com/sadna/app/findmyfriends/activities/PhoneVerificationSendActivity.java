@@ -42,6 +42,8 @@ public class PhoneVerificationSendActivity extends BaseActivity {
 
     private void sendSMS(String phoneNumber, String message)
     {
+        // An sms is being sent directly from the user's phone line due to lack of finance to use an external web service to send the SMS (cost money)
+        // In the real world, we would use an external web service to send the SMS to the user instead of using the user's phone line.
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, null, null);
     }
