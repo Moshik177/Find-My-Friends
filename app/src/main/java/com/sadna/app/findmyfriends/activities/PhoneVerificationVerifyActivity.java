@@ -47,8 +47,8 @@ public class PhoneVerificationVerifyActivity extends BaseActivity {
             editor.commit();
 
             AlertDialog.Builder successMessage = new AlertDialog.Builder(PhoneVerificationVerifyActivity.this);
-            successMessage.setTitle("Phone verification complete")
-                    .setMessage("Your phone is now verified!")
+            successMessage.setTitle("Phone verification complete!")
+                    .setMessage("Your phone is now verified. Click OK to return the login page.")
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

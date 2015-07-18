@@ -60,6 +60,7 @@ public class SignupActivity extends BaseActivity {
         signUpForm.setPassword(((EditText) findViewById(R.id.passwordText)).getText().toString());
         signUpForm.setBirthdate(((EditText) findViewById(R.id.birthdayText)).getText().toString());
         signUpForm.setGender(getGenderFromSignUpForm());
+        signUpForm.setPhone(getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0).getString("verify_phoneNumber", ""));
 
         if (!validateForm(signUpForm)) {
             return;
@@ -189,12 +190,12 @@ public class SignupActivity extends BaseActivity {
         return male;
     }
 
-    public static boolean signUpUser(String firstname, String lastname, String email, String username, String password, String birthdate, String gender) {
+    public static boolean signUpUser(String firstname, String lastname, String email, String username, String password, String birthdate, String gender, String phone) {
         WebService wsHttpRequest = new WebService("addUser");
         String result = null;
 
         try {
-            result = wsHttpRequest.execute(firstname, lastname, email, username, password, birthdate, gender);
+            result = wsHttpRequest.execute(firstname, lastname, email, username, password, birthdate, gender, phone);
         } catch (Throwable exception) {
             if (exception.getMessage().contains("User already exists")) {
                 mSignUpActionResult = USER_ALREADY_EXISTS;
@@ -219,7 +220,7 @@ public class SignupActivity extends BaseActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             return signUpUser(mSignUpForm.getFirstName(), mSignUpForm.getLastName(), mSignUpForm.getEmail(),
-                    mSignUpForm.getUsername(), mSignUpForm.getPassword(), mSignUpForm.getBirthdate(), mSignUpForm.getGender());
+                    mSignUpForm.getUsername(), mSignUpForm.getPassword(), mSignUpForm.getBirthdate(), mSignUpForm.getGender(), mSignUpForm.getPhone());
         }
 
         protected void onPreExecute() {

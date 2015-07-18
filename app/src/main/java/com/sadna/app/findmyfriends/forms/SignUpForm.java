@@ -12,6 +12,7 @@ public class SignUpForm {
     private String password;
     private String birthdate;
     private String gender;
+    private String phone;
 
     public String getFirstName() {
         return firstName;
@@ -67,5 +68,13 @@ public class SignUpForm {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

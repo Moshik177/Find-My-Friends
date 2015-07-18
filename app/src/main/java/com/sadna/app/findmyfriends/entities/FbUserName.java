@@ -4,6 +4,14 @@ package com.sadna.app.findmyfriends.entities;
  * Created by avihoo on 19/04/2015.
  */
 public class FbUserName {
+
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String gender;
+    private String password;
+    private String phone;
+
     public String getFirstName() {
         return firstName;
     }
@@ -44,9 +52,11 @@ public class FbUserName {
         this.password = password;
     }
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String gender;
-    private String password;
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

@@ -159,6 +159,7 @@ public class LoginActivity extends BaseActivity {
                             mFbUserName.setEmail(object.getString("email"));
                             mFbUserName.setPassword(hashString(mFbUserName.getEmail()));
                             mFbUserName.setGender(object.getString("gender").substring(0, 1).toUpperCase() + object.getString("gender").substring(1));
+                            mFbUserName.setPhone(getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0).getString("verify_phoneNumber", ""));
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }
@@ -184,7 +185,7 @@ public class LoginActivity extends BaseActivity {
         return hashText;
     }
 
-    private boolean signUpWithFacebook(String firstname, String lastname, String email, String username, String password, String birthdate, String gender) throws ExecutionException, InterruptedException {
+    private boolean signUpWithFacebook(String firstname, String lastname, String email, String username, String password, String birthdate, String gender, String phone) throws ExecutionException, InterruptedException {
         SignUpForm signUpForm = new SignUpForm();
 
         signUpForm.setFirstName(firstname);
@@ -194,6 +195,7 @@ public class LoginActivity extends BaseActivity {
         signUpForm.setPassword(password);
         signUpForm.setBirthdate(birthdate);
         signUpForm.setGender(gender);
+        signUpForm.setPhone(phone);
 
         FacebookSignUpTask signUpTask = new FacebookSignUpTask(signUpForm);
         return signUpTask.execute((Void) null).get();
@@ -421,7 +423,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             try {
-                signUpWithFacebook(mFbUserName.getFirstName(), mFbUserName.getLastName(), mFbUserName.getEmail(), mFbUserName.getEmail(), mFbUserName.getPassword(), "", mFbUserName.getGender());
+                signUpWithFacebook(mFbUserName.getFirstName(), mFbUserName.getLastName(), mFbUserName.getEmail(), mFbUserName.getEmail(), mFbUserName.getPassword(), "", mFbUserName.getGender(), mFbUserName.getPhone());
             } catch (Throwable e) {
                 e.printStackTrace();
                 Log.e("LoginActivity", e.getCause().toString());
