@@ -44,6 +44,7 @@ public class GroupsMainActivity extends BaseActivity {
                 Group currentSelectedGroup = (Group) userGroupsListView.getItemAtPosition(position);
                 ((MyApplication)getApplication()).setSelectedGroupId(currentSelectedGroup.getId());
                 ((MyApplication)getApplication()).setSelectedGroupName(currentSelectedGroup.getName());
+                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
             }
         });
 

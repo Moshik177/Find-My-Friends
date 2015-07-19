@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.sadna.app.findmyfriends.MyApplication;
+import com.sadna.app.findmyfriends.activities.GroupsMainActivity;
 import com.sadna.app.webservice.WebService;
 
 public class LocationServiceManager extends Service implements

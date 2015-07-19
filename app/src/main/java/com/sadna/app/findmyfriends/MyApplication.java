@@ -10,7 +10,7 @@ public class MyApplication extends Application {
     private String mUsername;
     private String mUserId;
     private String mSelectedGroupName;
-    private int mSelectedGroupId;
+    private String mSelectedGroupId;
 
     public String getUsername() {
         return mUsername;
@@ -36,11 +36,11 @@ public class MyApplication extends Application {
         this.mSelectedGroupName = selectedGroupName;
     }
 
-    public int getSelectedGroupId() {
+    public String getSelectedGroupId() {
         return mSelectedGroupId;
     }
 
-    public void setSelectedGroupId(int selectedGroupId) {
+    public void setSelectedGroupId(String selectedGroupId) {
         this.mSelectedGroupId = selectedGroupId;
     }
 }
