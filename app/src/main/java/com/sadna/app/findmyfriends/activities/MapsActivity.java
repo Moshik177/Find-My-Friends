@@ -101,6 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMarkers.clear();
         map.clear();
 
+        // For each location, generate marker custom image and add marker to the map
         for (UserLocation userLocation : usersLocations) {
             LatLng location = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
             String userGeneratedPictureURL = "https://chart.googleapis.com/chart?chst=d_bubble_icon_text_big_withshadow&chld=location|bb|" + userLocation.getUsername() + "|00CCFF|000000";
@@ -109,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMarkers.add(marker);
         }
 
+        // Sets the optimal zoom of the map to include all users
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Marker marker : mMarkers) {
             builder.include(marker.getPosition());
