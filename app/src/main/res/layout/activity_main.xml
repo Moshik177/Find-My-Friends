@@ -8,19 +8,11 @@
     android:id="@+id/background_img"
     android:touchscreenBlocksFocus="true">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/app_name"
-        android:id="@+id/textView"
+        android:id="@+id/welcomeImage"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/holo_orange_light"
-        android:textSize="@dimen/abc_text_size_display_1_material"
-        android:enabled="false"
-        android:focusable="false"
-        android:editable="false"
-        android:textStyle="bold|italic"
-        android:typeface="sans" />
+        android:src="@drawable/find_my_friends_app_logo_with_text" />
 </RelativeLayout>
