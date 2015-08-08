@@ -22,7 +22,8 @@ import com.sadna.app.webservice.WebService;
 
 
 public class CreateNewGroupActivity extends BaseActivity {
-    /*Data Members*/
+
+    /* Data Members */
     private static final int GROUP_ERROR = 1;
     GroupCreationTask mGroupCreationTask = null;
     private static int mSignUpActionResult;
@@ -35,6 +36,9 @@ public class CreateNewGroupActivity extends BaseActivity {
         setContentView(R.layout.activity_create_new_group);
     }
 
+    private void resetErrors() {
+        ((EditText) findViewById(R.id.newGroupNameTextBox)).setError(null);
+    }
 
     private void moveToGroupsMainActivity() {
         startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));
@@ -54,6 +58,14 @@ public class CreateNewGroupActivity extends BaseActivity {
 
     private boolean validateForm(GroupCreationForm groupCreationForm) {
         boolean valid = true;
+
+        resetErrors();
+
+        if (groupCreationForm.getGroupName().isEmpty()) {
+            ((EditText) findViewById(R.id.newGroupNameTextBox)).setError(getString(R.string.error_field_not_empty));
+            valid = false;
+        }
+
         return valid;
     }
 
