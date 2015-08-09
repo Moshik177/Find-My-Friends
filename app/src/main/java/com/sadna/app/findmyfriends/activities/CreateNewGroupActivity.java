@@ -1,12 +1,8 @@
 package com.sadna.app.findmyfriends.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
 
@@ -19,20 +15,17 @@ import com.sadna.app.findmyfriends.entities.Group;
 import com.sadna.app.findmyfriends.forms.GroupCreationForm;
 import com.sadna.app.webservice.WebService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A login screen that offers login via username and password.
  */
 
 
 public class CreateNewGroupActivity extends BaseActivity {
+
     /*Data Members*/
     private static final int GROUP_ERROR = 1;
     GroupCreationTask mGroupCreationTask = null;
     private static int mSignUpActionResult;
-
 
 
     @Override
@@ -59,8 +52,21 @@ public class CreateNewGroupActivity extends BaseActivity {
         mGroupCreationTask.execute((Void) null);
     }
 
+
+    private void resetErrors() {
+        ((EditText) findViewById(R.id.newGroupNameTextBox)).setError(null);
+    }
+
     private boolean validateForm(GroupCreationForm groupCreationForm) {
         boolean valid = true;
+
+        resetErrors();
+
+        if (groupCreationForm.getGroupName().isEmpty()) {
+            ((EditText) findViewById(R.id.newGroupNameTextBox)).setError(getString(R.string.error_field_not_empty));
+            valid = false;
+        }
+
         return valid;
     }
 
@@ -80,14 +86,13 @@ public class CreateNewGroupActivity extends BaseActivity {
         }
         CreateGroupByUser = gson.fromJson(result, new TypeToken<Group>() {
         }.getType());
-        ((MyApplication)getApplication()).setSelectedGroupId(CreateGroupByUser.getId());
+        ((MyApplication) getApplication()).setSelectedGroupId(CreateGroupByUser.getId());
         return true;
     }
 
     public class GroupCreationTask extends AsyncTask<Void, Void, Boolean> {
 
         private GroupCreationForm mGroupCreationForm;
-        private AlertDialog.Builder mBuilder = null;
 
 
         GroupCreationTask(GroupCreationForm groupCreationForm) {
@@ -101,24 +106,14 @@ public class CreateNewGroupActivity extends BaseActivity {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            mBuilder = new AlertDialog.Builder(CreateNewGroupActivity.this);
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
-                mBuilder.setTitle("Group creation Complete!")
-                        .setMessage("The group creation completed. Click OK to return the groups screen.")
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                startActivity(new Intent(getApplicationContext(), GettingAllGroupActivity.class));
-                                finish();
-                            }
-                        });
-                AlertDialog alert = mBuilder.create();
-                alert.show();
+                startActivity(new Intent(getApplicationContext(), GettingAllGroupActivity.class));
+                finish();
             } else {
                 //
             }

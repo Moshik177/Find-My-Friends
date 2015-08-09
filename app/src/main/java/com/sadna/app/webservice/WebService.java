@@ -90,7 +90,7 @@ public class WebService {
         {
             return resultsRequestSOAP.toString();
         }
-        return null;
+        return "";
     }
 
 }
