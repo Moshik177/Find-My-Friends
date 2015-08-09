@@ -27,4 +27,7 @@
     <string name="title_activity_phone_verification_send">PhoneVerificationSend</string>
     <string name="send_sms">Send SMS</string>
     <string name="verify">Verify my phone</string>
+    <string name="title_activity_getting_all_group">GettingAllGroupActivity</string>
+    <string name="listofphones">List_item</string>
+    <string name="hello_world">Hello world!</string>
 </resources>

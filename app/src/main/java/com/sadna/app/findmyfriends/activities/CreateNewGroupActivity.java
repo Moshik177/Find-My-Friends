@@ -10,11 +10,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sadna.app.findmyfriends.BaseActivity;
 import com.sadna.app.findmyfriends.MyApplication;
 import com.sadna.app.findmyfriends.R;
+import com.sadna.app.findmyfriends.entities.Group;
 import com.sadna.app.findmyfriends.forms.GroupCreationForm;
 import com.sadna.app.webservice.WebService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A login screen that offers login via username and password.
@@ -22,11 +28,11 @@ import com.sadna.app.webservice.WebService;
 
 
 public class CreateNewGroupActivity extends BaseActivity {
-
-    /* Data Members */
+    /*Data Members*/
     private static final int GROUP_ERROR = 1;
     GroupCreationTask mGroupCreationTask = null;
     private static int mSignUpActionResult;
+
 
 
     @Override
@@ -36,9 +42,6 @@ public class CreateNewGroupActivity extends BaseActivity {
         setContentView(R.layout.activity_create_new_group);
     }
 
-    private void resetErrors() {
-        ((EditText) findViewById(R.id.newGroupNameTextBox)).setError(null);
-    }
 
     private void moveToGroupsMainActivity() {
         startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));
@@ -58,22 +61,15 @@ public class CreateNewGroupActivity extends BaseActivity {
 
     private boolean validateForm(GroupCreationForm groupCreationForm) {
         boolean valid = true;
-
-        resetErrors();
-
-        if (groupCreationForm.getGroupName().isEmpty()) {
-            ((EditText) findViewById(R.id.newGroupNameTextBox)).setError(getString(R.string.error_field_not_empty));
-            valid = false;
-        }
-
         return valid;
     }
 
-    public static boolean signUpGroup(String groupName, String userId) {
+    public boolean signUpGroup(String groupName, String userId) {
 
         WebService wsHttpRequest = new WebService("addGroup");
         String result = null;
-
+        Group CreateGroupByUser;
+        Gson gson = new Gson();
         try {
             result = wsHttpRequest.execute(groupName, userId);
         } catch (Throwable exception) {
@@ -82,6 +78,9 @@ public class CreateNewGroupActivity extends BaseActivity {
             exception.printStackTrace();
             return false;
         }
+        CreateGroupByUser = gson.fromJson(result, new TypeToken<Group>() {
+        }.getType());
+        ((MyApplication)getApplication()).setSelectedGroupId(CreateGroupByUser.getId());
         return true;
     }
 
@@ -114,7 +113,7 @@ public class CreateNewGroupActivity extends BaseActivity {
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));
+                                startActivity(new Intent(getApplicationContext(), GettingAllGroupActivity.class));
                                 finish();
                             }
                         });

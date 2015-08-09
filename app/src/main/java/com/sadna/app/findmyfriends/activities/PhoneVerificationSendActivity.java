@@ -23,37 +23,10 @@ public class PhoneVerificationSendActivity extends BaseActivity {
         setContentView(R.layout.activity_phone_verification_send);
     }
 
-    private void resetErrors() {
-        ((EditText) findViewById(R.id.phone_number_textbox)).setError(null);
-    }
-
-    private boolean validateForm(String phoneNumber) {
-        boolean valid = true;
-
-        resetErrors();
-
-        if (phoneNumber.isEmpty()) {
-            ((EditText) findViewById(R.id.phone_number_textbox)).setError(getString(R.string.error_field_not_empty));
-            valid = false;
-        }
-
-        else if (phoneNumber.length() != 10) {
-            ((EditText) findViewById(R.id.phone_number_textbox)).setError(getString(R.string.error_phone_num_invalid));
-            valid = false;
-        }
-
-        return valid;
-    }
-
     public void sendSmsAndMoveToVerifyActivity(View view)
     {
-        String phoneNumber = ((EditText) findViewById(R.id.phone_number_textbox)).getText().toString();
-
-        if (!validateForm(phoneNumber)) {
-            return;
-        }
-
         mSharedPref = getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0); // 0 - for private mode;
+        String phoneNumber = ((EditText) findViewById(R.id.phone_number_textbox)).getText().toString();
         String verificationCode = generateVerificationCode();
         String message = "Your verification code for FindMyFriends is: " + verificationCode;
 
