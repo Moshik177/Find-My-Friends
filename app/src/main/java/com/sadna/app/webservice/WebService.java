@@ -1,5 +1,7 @@
 package com.sadna.app.webservice;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import org.ksoap2.SoapEnvelope;
@@ -73,23 +75,29 @@ public class WebService {
 
 
     public String executeToArray(ArrayList<String> ListOfStrings) throws XmlPullParserException, IOException {
-
-        SoapObject request = new SoapObject(this.namespace, this.methodName);
-        Gson gson = new Gson();
-        String gsonList = gson.toJson(ListOfStrings);
-        PropertyInfo propInfo = new PropertyInfo();
-        propInfo.name = "arg0";
-        propInfo.type = PropertyInfo.STRING_CLASS;
-        request.addPropertyIfValue(propInfo, gsonList);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(this.url, TIMEOUT_IN_MILLISECONDS);
-        androidHttpTransport.call(this.soapAction, envelope);
-        SoapPrimitive resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
-        if (resultsRequestSOAP != null)
-        {
-            return resultsRequestSOAP.toString();
+        try {
+            SoapObject request = new SoapObject(this.namespace, this.methodName);
+            Gson gson = new Gson();
+            String gsonList = gson.toJson(ListOfStrings);
+            PropertyInfo propInfo = new PropertyInfo();
+            propInfo.name = "arg0";
+            propInfo.type = PropertyInfo.STRING_CLASS;
+            request.addPropertyIfValue(propInfo, gsonList);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.setOutputSoapObject(request);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(this.url, TIMEOUT_IN_MILLISECONDS);
+            androidHttpTransport.call(this.soapAction, envelope);
+            SoapPrimitive resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
+            if (resultsRequestSOAP != null)
+            {
+                return resultsRequestSOAP.toString();
+            }
+            return null;
         }
+        catch (Throwable exception) {
+            Log.e("WebService", exception.getStackTrace().toString());
+        }
+
         return "";
     }
 

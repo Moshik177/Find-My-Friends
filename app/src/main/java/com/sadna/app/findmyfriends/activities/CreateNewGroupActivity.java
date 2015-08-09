@@ -22,10 +22,7 @@ import com.sadna.app.webservice.WebService;
 
 public class CreateNewGroupActivity extends BaseActivity {
 
-    /*Data Members*/
-    private static final int GROUP_ERROR = 1;
     GroupCreationTask mGroupCreationTask = null;
-    private static int mSignUpActionResult;
 
 
     @Override
@@ -33,11 +30,6 @@ public class CreateNewGroupActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_group);
-    }
-
-
-    private void moveToGroupsMainActivity() {
-        startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));
     }
 
     public void attemptGroupCreation(View view) {
@@ -73,7 +65,7 @@ public class CreateNewGroupActivity extends BaseActivity {
     public boolean signUpGroup(String groupName, String userId) {
 
         WebService wsHttpRequest = new WebService("addGroup");
-        String result = null;
+        String result;
         Group CreateGroupByUser;
         Gson gson = new Gson();
         try {

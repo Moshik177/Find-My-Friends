@@ -30,10 +30,10 @@ import java.util.Vector;
 
 public class GettingAllGroupActivity extends Activity {
 
-    private ArrayList<String> Phones = new ArrayList<String>();
-    private Map <String,String> map =  new HashMap<String,String>();
-    private Map <String,String> mapAfterFindingMatches =  new HashMap<String,String>();
-    private Vector<String> namesOfContacts = new Vector<String>();
+    private ArrayList<String> Phones = new ArrayList<>();
+    private Map<String, String> map = new HashMap<>();
+    private Map<String, String> mapAfterFindingMatches = new HashMap<>();
+    private Vector<String> namesOfContacts = new Vector<>();
     private ArrayList<UserPhone> PhonesThatAreConnectedWithApp = new ArrayList<>();
     private Gson gson = new Gson();
 
@@ -44,18 +44,16 @@ public class GettingAllGroupActivity extends Activity {
         getAllContactsFromUser();
         GetPhonesFromDataBase();
         final ListView resultListView = (ListView) findViewById(R.id.ListOfContacts);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, namesOfContacts);
         resultListView.setAdapter(adapter);
         resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
                 // ListView Clicked item value
                 final String itemValue = (String) resultListView.getItemAtPosition(position);
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(GettingAllGroupActivity.this);
-                mBuilder.setMessage("You sure that you want to add this person to the group")
+                mBuilder.setMessage("Are you sure you want to add this person to the group?")
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // if this button is clicked, just close
@@ -70,13 +68,13 @@ public class GettingAllGroupActivity extends Activity {
                                         setUserOnGroupDataBase(userName);
                                     }
                                 }
-            );
-            AlertDialog alert = mBuilder.create();
-            alert.show();
+                        );
+                AlertDialog alert = mBuilder.create();
+                alert.show();
 
-        }
-    });
-        final Button finishButton = (Button)findViewById(R.id.finisnbutton);
+            }
+        });
+        final Button finishButton = (Button) findViewById(R.id.finisnbutton);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,24 +93,22 @@ public class GettingAllGroupActivity extends Activity {
                 break;
             }
         }
-        for( UserPhone user :PhonesThatAreConnectedWithApp)
-        {
-            if(phone.equals(user.getPhone()))
-            {
+        for (UserPhone user : PhonesThatAreConnectedWithApp) {
+            if (phone.equals(user.getPhone())) {
                 userName = user.getUsername();
                 break;
             }
         }
         return userName;
     }
-    private void getAllContactsFromUser()
-    {
+
+    private void getAllContactsFromUser() {
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         if (cur != null && cur.getCount() > 0) {
             while (cur.moveToNext()) {
 
-                if ((Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))))==1) {
+                if ((Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)))) == 1) {
                     String id = cur.getString(cur.getColumnIndex(
                             ContactsContract.Contacts._ID));
                     String name = cur.getString(cur.getColumnIndex(
@@ -132,7 +128,7 @@ public class GettingAllGroupActivity extends Activity {
                         phoneType[i] = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.TYPE));
                         String newStringOrder = orderPhoneNumbers(phoneNum[i]);
-                        if(newStringOrder != null) {
+                        if (newStringOrder != null) {
                             Phones.add(newStringOrder);
                             map.put(newStringOrder, name);
                         }
@@ -149,12 +145,12 @@ public class GettingAllGroupActivity extends Activity {
         StringBuilder newOrderString = new StringBuilder(unorderPhoneNumber);
         String stringToReturn;
 
-        if (newOrderString.length() <= 10 || newOrderString.substring(0,3).compareTo("077") == 0 || newOrderString.substring(0,3).compareTo("072") == 0) {
+        if (newOrderString.length() <= 10 || newOrderString.substring(0, 3).compareTo("077") == 0 || newOrderString.substring(0, 3).compareTo("072") == 0) {
             stringToReturn = null;
         } else {
             newOrderString = new StringBuilder(newOrderString.toString().replaceAll("\\s", ""));
-            newOrderString = new StringBuilder (newOrderString.toString().replaceAll("-", ""));
-            String result = newOrderString.substring(0,4);
+            newOrderString = new StringBuilder(newOrderString.toString().replaceAll("-", ""));
+            String result = newOrderString.substring(0, 4);
             if (result.compareTo("+972") == 0) {
                 newOrderString = new StringBuilder(newOrderString.replace(0, 4, "0"));
             }
@@ -169,12 +165,11 @@ public class GettingAllGroupActivity extends Activity {
             public void run() {
                 try {
                     WebService wsHttpRequest = new WebService("addUserToGroup");
-                    String result = null;
 
                     try {
-                        result = wsHttpRequest.execute(((MyApplication)getApplication()).getSelectedGroupId(),userName);
+                        wsHttpRequest.execute(((MyApplication) getApplication()).getSelectedGroupId(), userName);
                     } catch (Throwable exception) {
-                        Log.e("GettingAllGroupActivity" ,exception.getMessage());
+                        Log.e("GettingAllGroupActivity", exception.getMessage());
                     }
                 } catch (Exception e) {
                     Log.e("GroupsMainActivity", e.getMessage());
@@ -201,7 +196,7 @@ public class GettingAllGroupActivity extends Activity {
                     try {
                         result = wsHttpRequest.executeToArray(Phones);
                     } catch (Throwable exception) {
-                        Log.e("GettingAllGroupActivity" ,exception.getMessage());
+                        Log.e("GettingAllGroupActivity", exception.getMessage());
                     }
 
                     PhonesThatAreConnectedWithApp = gson.fromJson(result, new TypeToken<ArrayList<UserPhone>>() {
@@ -222,16 +217,12 @@ public class GettingAllGroupActivity extends Activity {
     }
 
 
-    private void compareMapWithPhoneContacts()
-    {
-        for(UserPhone phone : PhonesThatAreConnectedWithApp)
-        {
-            for(Map.Entry<String, String> contact : map.entrySet())
-            {
+    private void compareMapWithPhoneContacts() {
+        for (UserPhone phone : PhonesThatAreConnectedWithApp) {
+            for (Map.Entry<String, String> contact : map.entrySet()) {
                 String phoneToCompare = contact.getKey();
                 String PhoneOfUser = phone.getPhone();
-                if(PhoneOfUser.equals(phoneToCompare))
-                {
+                if (PhoneOfUser.equals(phoneToCompare)) {
                     String name = contact.getValue();
                     mapAfterFindingMatches.put(phoneToCompare, name);
                     namesOfContacts.add(name);

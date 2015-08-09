@@ -181,7 +181,7 @@ public class LocationServiceManager extends Service implements
             wsHttpRequest.execute(username, latitude, longitude);
         } catch (Throwable e) {
             e.printStackTrace();
-            Log.e(TAG, e.getCause().toString());
+            Log.e(TAG, e.getMessage());
             return false;
         }
 
