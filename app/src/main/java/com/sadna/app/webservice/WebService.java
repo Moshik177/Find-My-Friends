@@ -1,5 +1,7 @@
 package com.sadna.app.webservice;
 
+import com.google.gson.Gson;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -9,6 +11,8 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by avihoo on 14/03/2015.
@@ -44,7 +48,9 @@ public class WebService {
     }
 
     public String execute(String... params) throws XmlPullParserException, IOException {
+
         SoapObject request = new SoapObject(this.namespace, this.methodName);
+
         for (int i = 0; i < params.length; i++)
         {
             PropertyInfo propInfo = new PropertyInfo();
@@ -64,4 +70,27 @@ public class WebService {
         }
         return null;
     }
+
+
+    public String executeToArray(ArrayList<String> ListOfStrings) throws XmlPullParserException, IOException {
+
+        SoapObject request = new SoapObject(this.namespace, this.methodName);
+        Gson gson = new Gson();
+        String gsonList = gson.toJson(ListOfStrings);
+        PropertyInfo propInfo = new PropertyInfo();
+        propInfo.name = "arg0";
+        propInfo.type = PropertyInfo.STRING_CLASS;
+        request.addPropertyIfValue(propInfo, gsonList);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(this.url, TIMEOUT_IN_MILLISECONDS);
+        androidHttpTransport.call(this.soapAction, envelope);
+        SoapPrimitive resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
+        if (resultsRequestSOAP != null)
+        {
+            return resultsRequestSOAP.toString();
+        }
+        return null;
+    }
+
 }
