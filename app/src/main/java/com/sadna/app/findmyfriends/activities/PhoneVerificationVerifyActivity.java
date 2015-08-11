@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.sadna.app.findmyfriends.BaseActivity;
 import com.sadna.app.findmyfriends.R;
 
-import org.w3c.dom.Text;
-
 public class PhoneVerificationVerifyActivity extends BaseActivity {
 
     private SharedPreferences mSharedPref;

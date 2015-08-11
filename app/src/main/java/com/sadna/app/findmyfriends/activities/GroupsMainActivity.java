@@ -1,8 +1,13 @@
 package com.sadna.app.findmyfriends.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,7 +58,44 @@ public class GroupsMainActivity extends BaseActivity {
 
         // Set the ArrayAdapter as the ListView's adapter.
         userGroupsListView.setAdapter(listViewAdapter);
+        registerForContextMenu(userGroupsListView);
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.groupsListView) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(userGroupsListView.getItemAtPosition(info.position).toString());
+            String[] menuItems = {"Leave", "Delete", "Manage users"};
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = {"Leave", "Delete", "Manage users"};
+        String menuItemName = menuItems[menuItemIndex];
+        String listItemName = userGroupsListView.getItemAtPosition(info.position).toString();
+
+        AlertDialog.Builder successMessage = new AlertDialog.Builder(GroupsMainActivity.this);
+        successMessage.setTitle("Action")
+                .setMessage("You chose to " + menuItemName + " at " + listItemName + " which id: " + ((Group)userGroupsListView.getItemAtPosition(info.position)).getId())
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    }
+                });
+        AlertDialog alert = successMessage.create();
+        alert.show();
+        return true;
     }
 
     private void getUserGroups() {
