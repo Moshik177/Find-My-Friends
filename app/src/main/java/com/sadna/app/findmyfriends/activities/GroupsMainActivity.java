@@ -22,7 +22,10 @@ import com.sadna.app.findmyfriends.entities.Group;
 import com.sadna.app.webservice.WebService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A login screen that offers login via username and password.
@@ -34,8 +37,14 @@ public class GroupsMainActivity extends BaseActivity {
     private ListView userGroupsListView;
     private ArrayAdapter<Group> listViewAdapter;
 
+    private final String[] menuItems = {"Leave Group", "Delete Group", "Manage Users"};
+    private Map<String, List<Object>> menuItemsPropertiesMap = new HashMap<>();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        menuItemsPropertiesMap.put(menuItems[0], Arrays.asList(true, (Object) "Are you sure you want to leave the group"));
+        menuItemsPropertiesMap.put(menuItems[1], Arrays.asList(true, (Object) "Are you sure you want to delete the group"));
+        menuItemsPropertiesMap.put(menuItems[2], Arrays.asList(false, (Object) null));
         setContentView(R.layout.activity_group_main);
         getUserGroups();
 
@@ -47,8 +56,8 @@ public class GroupsMainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Group currentSelectedGroup = (Group) userGroupsListView.getItemAtPosition(position);
-                ((MyApplication)getApplication()).setSelectedGroupId(currentSelectedGroup.getId());
-                ((MyApplication)getApplication()).setSelectedGroupName(currentSelectedGroup.getName());
+                ((MyApplication) getApplication()).setSelectedGroupId(currentSelectedGroup.getId());
+                ((MyApplication) getApplication()).setSelectedGroupName(currentSelectedGroup.getName());
                 startActivity(new Intent(getApplicationContext(), MapsActivity.class));
             }
         });
@@ -65,36 +74,48 @@ public class GroupsMainActivity extends BaseActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId()==R.id.groupsListView) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        if (v.getId() == R.id.groupsListView) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             menu.setHeaderTitle(userGroupsListView.getItemAtPosition(info.position).toString());
-            String[] menuItems = {"Leave", "Delete", "Manage users"};
-            for (int i = 0; i<menuItems.length; i++) {
-                menu.add(Menu.NONE, i, i, menuItems[i]);
+            menu.add(Menu.NONE, 0, 0, menuItems[0]);
+            if (((Group) userGroupsListView.getItemAtPosition(info.position)).getOwnerId() == Integer.parseInt(((MyApplication) getApplication()).getUserId())) {
+                for (int i = 1; i < menuItems.length; i++) {
+                    menu.add(Menu.NONE, i, i, menuItems[i]);
+                }
             }
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        String[] menuItems = {"Leave", "Delete", "Manage users"};
-        String menuItemName = menuItems[menuItemIndex];
+        final String menuItemName = menuItems[menuItemIndex];
         String listItemName = userGroupsListView.getItemAtPosition(info.position).toString();
 
-        AlertDialog.Builder successMessage = new AlertDialog.Builder(GroupsMainActivity.this);
-        successMessage.setTitle("Action")
-                .setMessage("You chose to " + menuItemName + " at " + listItemName + " which id: " + ((Group)userGroupsListView.getItemAtPosition(info.position)).getId())
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    }
-                });
-        AlertDialog alert = successMessage.create();
-        alert.show();
+        if ((boolean) menuItemsPropertiesMap.get(menuItemName).get(0)) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(GroupsMainActivity.this);
+            mBuilder.setMessage(menuItemsPropertiesMap.get(menuItemName).get(1) + " \"" + listItemName + "\"?")
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    executeContextMenuAction(menuItemName);
+                                }
+                            }
+                    );
+            AlertDialog alert = mBuilder.create();
+            alert.show();
+        }
+        else {
+            executeContextMenuAction(menuItemName);
+        }
+
         return true;
     }
 
@@ -110,7 +131,7 @@ public class GroupsMainActivity extends BaseActivity {
                     try {
                         result = wsHttpRequest.execute(((MyApplication) getApplication()).getUserId());
                     } catch (Throwable exception) {
-                        Log.e("GroupsMainActivity" ,exception.getMessage());
+                        Log.e("GroupsMainActivity", exception.getMessage());
                     }
 
                     userGroupsStrings = gson.fromJson(result, new TypeToken<ArrayList<String>>() {
@@ -138,5 +159,25 @@ public class GroupsMainActivity extends BaseActivity {
 
     private void moveToCreateNewGroupActivity() {
         startActivity(new Intent(getApplicationContext(), CreateNewGroupActivity.class));
+    }
+
+    private void executeContextMenuAction(String actionName) {
+        if (actionName.equals(menuItems[0])) {
+            // TODO: Leave group
+            refreshActivity();
+        }
+        else if (actionName.equals(menuItems[1])) {
+            // TODO: Delete group
+            refreshActivity();
+        }
+        else if (actionName.equals(menuItems[2])) {
+            // TODO: Manage users
+            System.out.println(actionName);
+        }
+    }
+
+    private void refreshActivity() {
+        finish();
+        startActivity(getIntent());
     }
 }

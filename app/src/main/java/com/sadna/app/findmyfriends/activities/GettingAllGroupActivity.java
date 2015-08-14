@@ -141,8 +141,8 @@ public class GettingAllGroupActivity extends Activity {
         }
     }
 
-    private String orderPhoneNumbers(String unorderPhoneNumber) {
-        StringBuilder newOrderString = new StringBuilder(unorderPhoneNumber);
+    private String orderPhoneNumbers(String unOrderedPhoneNumber) {
+        StringBuilder newOrderString = new StringBuilder(unOrderedPhoneNumber);
         String stringToReturn;
 
         if (newOrderString.length() <= 10 || newOrderString.substring(0, 3).compareTo("077") == 0 || newOrderString.substring(0, 3).compareTo("072") == 0) {
