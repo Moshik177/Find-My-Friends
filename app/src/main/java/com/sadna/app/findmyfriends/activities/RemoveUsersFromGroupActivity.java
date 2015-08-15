@@ -25,7 +25,7 @@ import java.util.List;
 public class RemoveUsersFromGroupActivity extends BaseActivity {
 
     private Gson gson = new Gson();
-    private List<UserId> userGroups = new ArrayList<>();
+    private List<UserId> groupMembers = new ArrayList<>();
     private ListView groupMembersListView;
     private ArrayAdapter<UserId> listViewAdapter;
 
@@ -70,7 +70,7 @@ public class RemoveUsersFromGroupActivity extends BaseActivity {
         });
 
         // Create ArrayAdapter using the planet list.
-        listViewAdapter = new ArrayAdapter<>(this, R.layout.group_row, userGroups);
+        listViewAdapter = new ArrayAdapter<>(this, R.layout.group_row, groupMembers);
 
         // Set the ArrayAdapter as the ListView's adapter.
         groupMembersListView.setAdapter(listViewAdapter);
@@ -122,7 +122,7 @@ public class RemoveUsersFromGroupActivity extends BaseActivity {
                         Log.e("RemoveUsersGroupActvt", exception.getMessage());
                     }
 
-                    userGroups = gson.fromJson(result, new TypeToken<ArrayList<UserId>>() {
+                    groupMembers = gson.fromJson(result, new TypeToken<ArrayList<UserId>>() {
                     }.getType());
                 } catch (Exception e) {
                     Log.e("RemoveUsersGroupActvt", e.getMessage());

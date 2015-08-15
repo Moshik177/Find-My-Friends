@@ -20,11 +20,13 @@ import com.google.gson.reflect.TypeToken;
 import com.sadna.app.findmyfriends.BaseActivity;
 import com.sadna.app.findmyfriends.MyApplication;
 import com.sadna.app.findmyfriends.R;
+import com.sadna.app.findmyfriends.entities.UserId;
 import com.sadna.app.findmyfriends.entities.UserPhone;
 import com.sadna.app.webservice.WebService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -36,13 +38,17 @@ public class AddUsersToGroupActivity extends BaseActivity {
     private Vector<String> namesOfContacts = new Vector<>();
     private ArrayList<UserPhone> PhonesThatAreConnectedWithApp = new ArrayList<>();
     private Gson gson = new Gson();
+    private List<UserId> groupMembers = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_users_to_group);
+
+        getGroupMembers();
         getAllContactsFromUser();
         GetPhonesFromDataBase();
+
         final ListView resultListView = (ListView) findViewById(R.id.ListOfContacts);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.group_row, namesOfContacts);
@@ -74,6 +80,7 @@ public class AddUsersToGroupActivity extends BaseActivity {
 
             }
         });
+
         final Button finishButton = (Button) findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +208,7 @@ public class AddUsersToGroupActivity extends BaseActivity {
 
                     PhonesThatAreConnectedWithApp = gson.fromJson(result, new TypeToken<ArrayList<UserPhone>>() {
                     }.getType());
+
                     compareMapWithPhoneContacts();
                 } catch (Exception e) {
                     Log.e("AddUsersToGroupActivity", e.getMessage());
@@ -216,21 +224,62 @@ public class AddUsersToGroupActivity extends BaseActivity {
         }
     }
 
+    private void getGroupMembers() {
+        Thread getGroupMembersThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    WebService wsHttpRequest = new WebService("getGroupMembers");
+                    String result = null;
+
+                    try {
+                        result = wsHttpRequest.execute(((MyApplication) getApplication()).getSelectedGroupId());
+                    } catch (Throwable exception) {
+                        Log.e("RemoveUsersGroupActvt", exception.getMessage());
+                    }
+
+                    groupMembers = gson.fromJson(result, new TypeToken<ArrayList<UserId>>() {
+                    }.getType());
+                } catch (Exception e) {
+                    Log.e("RemoveUsersGroupActvt", e.getMessage());
+                }
+            }
+        });
+
+        getGroupMembersThread.start();
+        try {
+            getGroupMembersThread.join();
+        } catch (InterruptedException exception) {
+            Log.e("RemoveUsersGroupActvt", exception.getMessage());
+        }
+    }
 
     private void compareMapWithPhoneContacts() {
-        for (UserPhone phone : PhonesThatAreConnectedWithApp) {
+        for (UserPhone userPhone : PhonesThatAreConnectedWithApp) {
             for (Map.Entry<String, String> contact : map.entrySet()) {
                 String phoneToCompare = contact.getKey();
-                String PhoneOfUser = phone.getPhone();
+                String PhoneOfUser = userPhone.getPhone();
                 if (PhoneOfUser.equals(phoneToCompare)) {
-                    String name = contact.getValue();
-                    mapAfterFindingMatches.put(phoneToCompare, name);
-                    namesOfContacts.add(name);
-                    break;
+                    if (!userAlreadyExistsOnGroup(userPhone.getUsername())) {
+                        String name = contact.getValue();
+                        mapAfterFindingMatches.put(phoneToCompare, name);
+                        namesOfContacts.add(name);
+                        break;
+                    }
                 }
             }
         }
 
+    }
+
+    private boolean userAlreadyExistsOnGroup(String username) {
+        for (UserId member : groupMembers) {
+            if (member.getUsername().equals(username)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
