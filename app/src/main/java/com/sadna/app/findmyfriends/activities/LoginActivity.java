@@ -115,7 +115,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onError(FacebookException exception) {
                             // App code
-                            Log.e("LoginActivity", exception.getCause().toString());
+                            Log.e("LoginActivity", exception.getMessage());
                         }
                     });
             updateWithToken(AccessToken.getCurrentAccessToken());
@@ -355,7 +355,7 @@ public class LoginActivity extends BaseActivity {
             }
         } catch (Throwable e) {
             e.printStackTrace();
-            Log.e("LoginActivity", e.getCause().toString());
+            Log.e("LoginActivity", e.getMessage());
             return false;
         }
 
@@ -426,7 +426,7 @@ public class LoginActivity extends BaseActivity {
                 signUpWithFacebook(mFbUserName.getFirstName(), mFbUserName.getLastName(), mFbUserName.getEmail(), mFbUserName.getEmail(), mFbUserName.getPassword(), "", mFbUserName.getGender(), mFbUserName.getPhone());
             } catch (Throwable e) {
                 e.printStackTrace();
-                Log.e("LoginActivity", e.getCause().toString());
+                Log.e("LoginActivity", e.getMessage());
             }
         }
 

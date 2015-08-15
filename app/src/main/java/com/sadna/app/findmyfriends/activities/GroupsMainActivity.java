@@ -88,7 +88,7 @@ public class GroupsMainActivity extends BaseActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
         final String menuItemName = menuItems[menuItemIndex];
         String listItemName = userGroupsListView.getItemAtPosition(info.position).toString();
@@ -105,15 +105,14 @@ public class GroupsMainActivity extends BaseActivity {
                     })
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    executeContextMenuAction(menuItemName);
+                                    executeContextMenuAction(menuItemName, ((Group) userGroupsListView.getItemAtPosition(info.position)).getId());
                                 }
                             }
                     );
             AlertDialog alert = mBuilder.create();
             alert.show();
-        }
-        else {
-            executeContextMenuAction(menuItemName);
+        } else {
+            executeContextMenuAction(menuItemName, null);
         }
 
         return true;
@@ -161,16 +160,14 @@ public class GroupsMainActivity extends BaseActivity {
         startActivity(new Intent(getApplicationContext(), CreateNewGroupActivity.class));
     }
 
-    private void executeContextMenuAction(String actionName) {
+    private void executeContextMenuAction(String actionName, String groupId) {
         if (actionName.equals(menuItems[0])) {
-            // TODO: Leave group
+            leaveGroup(groupId);
             refreshActivity();
-        }
-        else if (actionName.equals(menuItems[1])) {
+        } else if (actionName.equals(menuItems[1])) {
             // TODO: Delete group
             refreshActivity();
-        }
-        else if (actionName.equals(menuItems[2])) {
+        } else if (actionName.equals(menuItems[2])) {
             // TODO: Manage users
             System.out.println(actionName);
         }
@@ -180,4 +177,32 @@ public class GroupsMainActivity extends BaseActivity {
         finish();
         startActivity(getIntent());
     }
+
+    private void leaveGroup(final String groupId) {
+        Thread leaveGroupThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    WebService wsHttpRequest = new WebService("leaveGroup");
+
+                    try {
+                        wsHttpRequest.execute(((MyApplication) getApplication()).getUserId(), groupId);
+                    } catch (Throwable exception) {
+                        Log.e("GroupsMainActivity", exception.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    Log.e("GroupsMainActivity", e.getMessage());
+                }
+            }
+        });
+
+        leaveGroupThread.start();
+        try {
+            leaveGroupThread.join();
+        } catch (InterruptedException exception) {
+            Log.e("GroupsMainActivity", exception.getMessage());
+        }
+    }
+
 }
