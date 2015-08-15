@@ -104,7 +104,7 @@ public class CreateNewGroupActivity extends BaseActivity {
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
-                startActivity(new Intent(getApplicationContext(), GettingAllGroupActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddUsersToGroupActivity.class));
                 finish();
             } else {
                 //

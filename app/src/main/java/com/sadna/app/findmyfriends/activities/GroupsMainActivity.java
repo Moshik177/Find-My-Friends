@@ -93,6 +93,9 @@ public class GroupsMainActivity extends BaseActivity {
         final String menuItemName = menuItems[menuItemIndex];
         String listItemName = userGroupsListView.getItemAtPosition(info.position).toString();
 
+        ((MyApplication) getApplication()).setSelectedGroupId(((Group) userGroupsListView.getItemAtPosition(info.position)).getId());
+        ((MyApplication) getApplication()).setSelectedGroupName(((Group) userGroupsListView.getItemAtPosition(info.position)).getName());
+
         if ((boolean) menuItemsPropertiesMap.get(menuItemName).get(0)) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(GroupsMainActivity.this);
             mBuilder.setMessage(menuItemsPropertiesMap.get(menuItemName).get(1) + " \"" + listItemName + "\"?")
@@ -168,8 +171,7 @@ public class GroupsMainActivity extends BaseActivity {
             deleteGroup(groupId);
             refreshActivity();
         } else if (actionName.equals(menuItems[2])) {
-            // TODO: Manage users
-            System.out.println(actionName);
+            startActivity(new Intent(getApplicationContext(), ManageUsersActivity.class));
         }
     }
 

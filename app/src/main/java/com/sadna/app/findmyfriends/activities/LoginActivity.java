@@ -6,7 +6,6 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,13 +29,14 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.sadna.app.findmyfriends.BaseActivity;
-import com.sadna.app.findmyfriends.utils.FacebookSignUpTask;
 import com.sadna.app.findmyfriends.MyApplication;
 import com.sadna.app.findmyfriends.R;
 import com.sadna.app.findmyfriends.entities.FbUserName;
 import com.sadna.app.findmyfriends.forms.SignUpForm;
+import com.sadna.app.findmyfriends.utils.FacebookSignUpTask;
 import com.sadna.app.gpstracker.LocationServiceManager;
 import com.sadna.app.webservice.WebService;
+
 import org.json.JSONObject;
 
 import java.math.BigInteger;

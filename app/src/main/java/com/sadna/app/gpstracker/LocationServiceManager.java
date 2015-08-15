@@ -82,7 +82,7 @@ public class LocationServiceManager extends Service implements
             SendLocationAsyncTask sendLocationTask = new SendLocationAsyncTask(((MyApplication) getApplication()).getUsername(), String.valueOf(latitude), String.valueOf(longitude));
             sendLocationTask.execute((Void) null);
         } else {
-            Log.e(TAG, "Failed get last know location");
+            Log.e(TAG, "Failed get last known location");
         }
         togglePeriodicLocationUpdates();
     }

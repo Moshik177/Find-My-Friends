@@ -29,7 +29,11 @@
     <string name="error_phone_num_invalid">This phone number is invalid</string>
     <string name="send_sms">Send SMS</string>
     <string name="verify">Verify my phone</string>
-    <string name="title_activity_getting_all_group">GettingAllGroupActivity</string>
-    <string name="listofphones">List_item</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_add_users_to_group">AddUsersToGroupActivity</string>
+    <string name="title_activity_remove_users_from_group">RemoveUsersFromGroupActivity</string>
+    <string name="title_activity_manage_users">ManageUsersActivity</string>
+    <string name="title_manage_users">Manage Users</string>
+    <string name="list_of_phones">List_item</string>
+    <string name="addUsersButton">add users</string>
+    <string name="removeUsersButton">remove users</string>
 </resources>

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sadna.app.findmyfriends.activities.GettingAllGroupActivity"
+    tools:context="com.sadna.app.findmyfriends.activities.AddUsersToGroupActivity"
     android:background="@color/holo_blue_light">
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_above="@+id/finisnbutton" />
+        android:layout_above="@+id/finish_button" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/text1"
@@ -20,7 +20,7 @@
 
     <Button
         style="@style/Base.Widget.AppCompat.Button"
-        android:id="@+id/finisnbutton"
+        android:id="@+id/finish_button"
         android:layout_width="match_parent"
         android:layout_height="116dp"
         android:capitalize="sentences"

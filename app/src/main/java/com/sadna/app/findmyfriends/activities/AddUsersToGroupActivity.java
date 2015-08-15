@@ -1,7 +1,6 @@
 package com.sadna.app.findmyfriends.activities;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -18,6 +17,7 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sadna.app.findmyfriends.BaseActivity;
 import com.sadna.app.findmyfriends.MyApplication;
 import com.sadna.app.findmyfriends.R;
 import com.sadna.app.findmyfriends.entities.UserPhone;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class GettingAllGroupActivity extends Activity {
+public class AddUsersToGroupActivity extends BaseActivity {
 
     private ArrayList<String> Phones = new ArrayList<>();
     private Map<String, String> map = new HashMap<>();
@@ -40,19 +40,19 @@ public class GettingAllGroupActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_getting_all_group);
+        setContentView(R.layout.activity_add_users_to_group);
         getAllContactsFromUser();
         GetPhonesFromDataBase();
         final ListView resultListView = (ListView) findViewById(R.id.ListOfContacts);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, namesOfContacts);
+                R.layout.group_row, namesOfContacts);
         resultListView.setAdapter(adapter);
         resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // ListView Clicked item value
                 final String itemValue = (String) resultListView.getItemAtPosition(position);
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(GettingAllGroupActivity.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(AddUsersToGroupActivity.this);
                 mBuilder.setMessage("Are you sure you want to add this person to the group?")
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -74,7 +74,7 @@ public class GettingAllGroupActivity extends Activity {
 
             }
         });
-        final Button finishButton = (Button) findViewById(R.id.finisnbutton);
+        final Button finishButton = (Button) findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,10 +169,10 @@ public class GettingAllGroupActivity extends Activity {
                     try {
                         wsHttpRequest.execute(((MyApplication) getApplication()).getSelectedGroupId(), userName);
                     } catch (Throwable exception) {
-                        Log.e("GettingAllGroupActivity", exception.getMessage());
+                        Log.e("AddUsersToGroupActivity", exception.getMessage());
                     }
                 } catch (Exception e) {
-                    Log.e("GroupsMainActivity", e.getMessage());
+                    Log.e("AddUsersToGroupActivity", e.getMessage());
                 }
             }
         });
@@ -181,7 +181,7 @@ public class GettingAllGroupActivity extends Activity {
         try {
             addUserToGroupThread.join();
         } catch (InterruptedException exception) {
-            Log.e("GettingAllGroupActivity", exception.getMessage());
+            Log.e("AddUsersToGroupActivity", exception.getMessage());
         }
     }
 
@@ -196,14 +196,14 @@ public class GettingAllGroupActivity extends Activity {
                     try {
                         result = wsHttpRequest.executeToArray(Phones);
                     } catch (Throwable exception) {
-                        Log.e("GettingAllGroupActivity", exception.getMessage());
+                        Log.e("AddUsersToGroupActivity", exception.getMessage());
                     }
 
                     PhonesThatAreConnectedWithApp = gson.fromJson(result, new TypeToken<ArrayList<UserPhone>>() {
                     }.getType());
                     compareMapWithPhoneContacts();
                 } catch (Exception e) {
-                    Log.e("GroupsMainActivity", e.getMessage());
+                    Log.e("AddUsersToGroupActivity", e.getMessage());
                 }
             }
         });
@@ -212,7 +212,7 @@ public class GettingAllGroupActivity extends Activity {
         try {
             getUserPhonesThread.join();
         } catch (InterruptedException exception) {
-            Log.e("GroupsMainActivity", exception.getMessage());
+            Log.e("AddUsersToGroupActivity", exception.getMessage());
         }
     }
 
