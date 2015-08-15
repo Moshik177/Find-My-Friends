@@ -165,7 +165,7 @@ public class GroupsMainActivity extends BaseActivity {
             leaveGroup(groupId);
             refreshActivity();
         } else if (actionName.equals(menuItems[1])) {
-            // TODO: Delete group
+            deleteGroup(groupId);
             refreshActivity();
         } else if (actionName.equals(menuItems[2])) {
             // TODO: Manage users
@@ -191,8 +191,8 @@ public class GroupsMainActivity extends BaseActivity {
                         Log.e("GroupsMainActivity", exception.getMessage());
                     }
 
-                } catch (Exception e) {
-                    Log.e("GroupsMainActivity", e.getMessage());
+                } catch (Exception exception) {
+                    Log.e("GroupsMainActivity", exception.getMessage());
                 }
             }
         });
@@ -200,6 +200,33 @@ public class GroupsMainActivity extends BaseActivity {
         leaveGroupThread.start();
         try {
             leaveGroupThread.join();
+        } catch (InterruptedException exception) {
+            Log.e("GroupsMainActivity", exception.getMessage());
+        }
+    }
+
+    private void deleteGroup(final String groupId) {
+        Thread deleteGroupThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    WebService wsHttpRequest = new WebService("deleteGroup");
+
+                    try {
+                        wsHttpRequest.execute(groupId);
+                    } catch (Throwable exception) {
+                        Log.e("GroupsMainActivity", exception.getMessage());
+                    }
+
+                } catch (Exception exception) {
+                    Log.e("GroupsMainActivity", exception.getMessage());
+                }
+            }
+        });
+
+        deleteGroupThread.start();
+        try {
+            deleteGroupThread.join();
         } catch (InterruptedException exception) {
             Log.e("GroupsMainActivity", exception.getMessage());
         }
