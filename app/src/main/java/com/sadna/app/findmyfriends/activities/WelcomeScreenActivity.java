@@ -3,6 +3,7 @@ package com.sadna.app.findmyfriends.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.sadna.app.findmyfriends.BaseActivity;
 import com.sadna.app.findmyfriends.R;
@@ -38,7 +39,7 @@ public class WelcomeScreenActivity extends BaseActivity {
                         wait += 100;
                     }
                 } catch (Exception e) {
-                    System.out.println("Exception thrown:" + e);
+                    Log.e("WelcomeScreen", e.getMessage());
                 } finally {
                     /**
                         * Called after splash times up. Do some action after splash

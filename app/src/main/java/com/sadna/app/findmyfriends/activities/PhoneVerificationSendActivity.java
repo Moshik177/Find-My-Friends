@@ -62,8 +62,8 @@ public class PhoneVerificationSendActivity extends BaseActivity {
         editor.putString("verify_code", verificationCode);
         editor.commit();
         sendSMS(PhoneNumberUtils.formatNumber(phoneNumber), message);
-        startActivity(new Intent(getApplicationContext(), PhoneVerificationVerifyActivity.class));
         finish();
+        startActivity(new Intent(getApplicationContext(), PhoneVerificationVerifyActivity.class));
     }
 
     private void sendSMS(String phoneNumber, String message)

@@ -85,7 +85,6 @@ public class LoginActivity extends BaseActivity {
             ((MyApplication) getApplication()).setUserId(mSharedPref.getString(kUSERID, ""));
             ((MyApplication) getApplication()).setUsername(mSharedPref.getString(kUSERNAME, ""));
             startGpsUpdateAndMoveToGroupsMainActivity();
-            finish();
             return;
         }
         else {
@@ -318,6 +317,7 @@ public class LoginActivity extends BaseActivity {
 
     private void startGpsUpdateAndMoveToGroupsMainActivity() {
         // use this to start and trigger a service
+        finish();
         Intent gpsUpdatesIntent = new Intent(getApplicationContext(), LocationServiceManager.class);
         getApplicationContext().startService(gpsUpdatesIntent);
         startActivity(new Intent(getApplicationContext(), GroupsMainActivity.class));

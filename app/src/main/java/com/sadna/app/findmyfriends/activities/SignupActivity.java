@@ -238,8 +238,8 @@ public class SignupActivity extends BaseActivity {
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                 finish();
+                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             }
                         });
                 AlertDialog alert = mBuilder.create();

@@ -19,7 +19,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.sadna.app.findmyfriends.MyApplication;
-import com.sadna.app.findmyfriends.activities.GroupsMainActivity;
 import com.sadna.app.webservice.WebService;
 
 public class LocationServiceManager extends Service implements
@@ -128,8 +127,10 @@ public class LocationServiceManager extends Service implements
     }
 
     protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }
     }
 
     protected void stopLocationUpdates() {
@@ -181,7 +182,7 @@ public class LocationServiceManager extends Service implements
             wsHttpRequest.execute(username, latitude, longitude);
         } catch (Throwable e) {
             e.printStackTrace();
-            Log.e(TAG, e.getMessage());
+            //Log.e(TAG, e.getMessage());
             return false;
         }
 
