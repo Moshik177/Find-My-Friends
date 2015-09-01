@@ -128,6 +128,7 @@
     <orderEntry type="library" exported="" name="javax.mail" level="project" />
     <orderEntry type="library" exported="" name="ksoap2-android-assembly-3.4.0-jar-with-dependencies" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="android-websockets-master" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="android-maps-utils-0.3.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-7.5.0" level="project" />

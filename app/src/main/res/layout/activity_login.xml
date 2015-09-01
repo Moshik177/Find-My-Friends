@@ -11,7 +11,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context="com.sadna.app.findmyfriends.activities.LoginActivity"
-    android:background="@color/holo_blue_light">
+    android:background="@drawable/background1">
 
     <!-- Login progress -->
 
@@ -41,14 +41,16 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:inputType="text"
-                android:textColor="@color/holo_orange_light" />
+                android:textColor="@color/holo_orange_light"
+                android:textColorHint="@color/holo_orange_light" />
 
             <EditText android:id="@+id/password" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@color/holo_orange_light" />
+                android:textColor="@color/holo_orange_light"
+                android:textColorHint="@color/holo_orange_light" />
 
             <Button android:id="@+id/sign_in_button" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"

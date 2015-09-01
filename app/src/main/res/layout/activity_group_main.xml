@@ -3,7 +3,7 @@
     android:id="@+id/logGroup"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/holo_blue_light"
+    android:background="@drawable/background1"
     android:orientation="vertical"
     android:weightSum="1"
     android:baselineAligned="false"

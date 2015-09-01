@@ -36,4 +36,9 @@
     <string name="list_of_phones">List_item</string>
     <string name="addUsersButton">add users</string>
     <string name="removeUsersButton">remove users</string>
+
+    <!-- Chat -->
+    <string name="title">Chat Group</string>
+    <string name="btn_send">Send</string>
+    <string name="title_activity_chat_group">ChatGroupActivity</string>
 </resources>

@@ -37,7 +37,7 @@ public class GroupsMainActivity extends BaseActivity {
     private ListView userGroupsListView;
     private ArrayAdapter<Group> listViewAdapter;
 
-    private final String[] menuItems = {"Leave Group", "Delete Group", "Manage Users"};
+    private final String[] menuItems = {"Leave Group", "Delete Group", "Manage Users", "Chat Group"};
     private Map<String, List<Object>> menuItemsPropertiesMap = new HashMap<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class GroupsMainActivity extends BaseActivity {
         menuItemsPropertiesMap.put(menuItems[0], Arrays.asList(true, (Object) "Are you sure you want to leave the group"));
         menuItemsPropertiesMap.put(menuItems[1], Arrays.asList(true, (Object) "Are you sure you want to delete the group"));
         menuItemsPropertiesMap.put(menuItems[2], Arrays.asList(false, (Object) null));
+        menuItemsPropertiesMap.put(menuItems[3], Arrays.asList(false, (Object) null));
         setContentView(R.layout.activity_group_main);
         getUserGroups();
 
@@ -79,10 +80,11 @@ public class GroupsMainActivity extends BaseActivity {
             menu.setHeaderTitle(userGroupsListView.getItemAtPosition(info.position).toString());
             menu.add(Menu.NONE, 0, 0, menuItems[0]);
             if (((Group) userGroupsListView.getItemAtPosition(info.position)).getOwnerId() == Integer.parseInt(((MyApplication) getApplication()).getUserId())) {
-                for (int i = 1; i < menuItems.length; i++) {
+                for (int i = 1; i < menuItems.length - 1; i++) {
                     menu.add(Menu.NONE, i, i, menuItems[i]);
                 }
             }
+            menu.add(Menu.NONE, 3, 3, menuItems[3]);
         }
     }
 
@@ -172,6 +174,14 @@ public class GroupsMainActivity extends BaseActivity {
             refreshActivity();
         } else if (actionName.equals(menuItems[2])) {
             startActivity(new Intent(getApplicationContext(), ManageUsersActivity.class));
+        } else if (actionName.equals(menuItems[3])) {
+            String name = ((MyApplication)getApplication()).getUsername();
+            String room_name = ((MyApplication)getApplication()).getSelectedGroupId();
+            Intent intent = new Intent(getApplicationContext(), ChatGroupActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("room_name", room_name);
+
+            startActivity(intent);
         }
     }
 

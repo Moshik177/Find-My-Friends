@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sadna.app.findmyfriends"
-    android:versionCode="4"
-    android:versionName="4.0" >
+    android:versionCode="6"
+    android:versionName="6.0" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -128,6 +128,11 @@
         <activity
             android:name=".activities.ManageUsersActivity"
             android:label="@string/title_activity_manage_users" >
+        </activity>
+        <activity
+            android:name=".activities.ChatGroupActivity"
+            android:label="@string/title_activity_chat_group"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 
