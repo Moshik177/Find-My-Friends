@@ -67,7 +67,8 @@
             android:ems="10"
             android:inputType="number"
             android:phoneNumber="false"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:textColor="@color/holo_orange_light" />
 
     </LinearLayout>
 
