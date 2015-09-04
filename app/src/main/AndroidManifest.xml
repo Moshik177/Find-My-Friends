@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sadna.app.findmyfriends"
     android:versionCode="7"
-    android:versionName="7.0" >
+    android:versionName="7.0">
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -39,10 +39,10 @@
         android:allowBackup="true"
         android:icon="@drawable/find_my_friends_app_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activities.WelcomeScreenActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +53,7 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".activities.WelcomeScreenActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.WelcomeScreenActivity" />
@@ -74,7 +74,7 @@
         <activity
             android:name=".activities.SignupActivity"
             android:label="@string/title_activity_signup"
-            android:parentActivityName=".activities.WelcomeScreenActivity" >
+            android:parentActivityName=".activities.WelcomeScreenActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.WelcomeScreenActivity" />
@@ -82,7 +82,7 @@
         <activity
             android:name=".activities.GroupsMainActivity"
             android:label="@string/title_activity_login_group"
-            android:parentActivityName=".activities.SignupActivity" >
+            android:parentActivityName=".activities.SignupActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.SignupActivity" />
@@ -90,7 +90,7 @@
         <activity
             android:name=".activities.CreateNewGroupActivity"
             android:label="@string/title_activity_create_new_group"
-            android:parentActivityName=".activities.GroupsMainActivity" >
+            android:parentActivityName=".activities.GroupsMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.GroupsMainActivity" />
@@ -111,29 +111,25 @@
 
         <activity
             android:name=".activities.PhoneVerificationSendActivity"
-            android:label="@string/title_activity_phone_verification_send" >
-        </activity>
+            android:label="@string/title_activity_phone_verification_send"></activity>
         <activity
             android:name=".activities.PhoneVerificationVerifyActivity"
-            android:label="@string/title_activity_phone_verification_send" >
-        </activity>
+            android:label="@string/title_activity_phone_verification_send"></activity>
         <activity
             android:name=".activities.AddUsersToGroupActivity"
-            android:label="@string/title_activity_add_users_to_group" >
-        </activity>
+            android:label="@string/title_activity_add_users_to_group"></activity>
         <activity
             android:name=".activities.RemoveUsersFromGroupActivity"
-            android:label="@string/title_activity_remove_users_from_group" >
-        </activity>
+            android:label="@string/title_activity_remove_users_from_group"></activity>
         <activity
             android:name=".activities.ManageUsersActivity"
-            android:label="@string/title_activity_manage_users" >
-        </activity>
+            android:label="@string/title_activity_manage_users"></activity>
         <activity
             android:name=".activities.ChatGroupActivity"
             android:label="@string/title_activity_chat_group"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>

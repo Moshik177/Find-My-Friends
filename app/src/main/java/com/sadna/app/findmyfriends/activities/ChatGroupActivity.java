@@ -1,12 +1,14 @@
 package com.sadna.app.findmyfriends.activities;
 
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -68,11 +70,24 @@ public class ChatGroupActivity extends BaseActivity {
     // Client room
     private String room = null;
 
+    private String mTitle = "FindMyFriends";
+    private int mNotificationId = 1;
+    private static final int MAX_NOTIFICATIONS = 3;
+    NotificationManager mNotifyMgr;
+
+    @Override
+
+    protected void onResume() {
+        super.onResume();
+        mNotifyMgr.cancelAll();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_group);
+        mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         ((TextView) findViewById(R.id.groupNameTitle)).setText(((MyApplication) getApplication()).getSelectedGroupName());
         btnSend = (Button) findViewById(R.id.btnSend);
@@ -239,7 +254,7 @@ public class ChatGroupActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (client != null & client.isConnected()) {
+        if (client != null && client.isConnected()) {
             client.disconnect();
         }
     }
@@ -257,37 +272,53 @@ public class ChatGroupActivity extends BaseActivity {
                 adapter.notifyDataSetChanged();
 
                 // Playing device's notification
-                playBeep();
+                playBeep(m.isSelf());
+                if (!((MyApplication) getApplication()).isActivityVisible()) {
+                    notifySendingMessage(m);
+                }
             }
         });
     }
 
     private void showToast(final String message) {
+        if (((MyApplication) getApplication()).isActivityVisible()) {
+            runOnUiThread(new Runnable() {
 
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), message,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), message,
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
+
 
     /**
      * Plays device's default notification sound
      */
-    public void playBeep() {
+    public void playBeep(boolean isSelf) {
 
         try {
-
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            MediaPlayer player = MediaPlayer.create(this, notification);
-            player.setLooping(false);
-            player.start();
+            Uri notification;
+            if (isSelf) {
+                MediaPlayer player = MediaPlayer.create(this, R.raw.chat_ringtone_pop);
+                player.setLooping(false);
+                player.start();
+            } else {
+                if (((MyApplication) getApplication()).isActivityVisible()) {
+                    MediaPlayer player = MediaPlayer.create(this, R.raw.message_incoming);
+                    player.setLooping(false);
+                    player.start();
+                } else {
+                    notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    MediaPlayer player = MediaPlayer.create(this, notification);
+                    player.setLooping(false);
+                    player.start();
+                }
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("ChatGroupActivity", e.getMessage());
         }
     }
 
@@ -303,4 +334,18 @@ public class ChatGroupActivity extends BaseActivity {
         return new String(hexChars);
     }
 
+    private void notifySendingMessage(Message message) {
+        Intent i = getIntent();
+        String name = message.getFromName();
+        String text = message.getMessage();
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.find_my_friends_app_logo)
+                .setContentTitle(mTitle)
+                .setContentText(name + ": " + text).setAutoCancel(true);
+
+        mNotificationId = (mNotificationId == MAX_NOTIFICATIONS) ? 1 : mNotificationId+1;
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, mNotificationId, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_CANCEL_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    }
 }

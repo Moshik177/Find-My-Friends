@@ -24,6 +24,18 @@ public class BaseActivity extends AppCompatActivity {
     private SharedPreferences mSharedPref;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.activityPaused();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mSharedPref = getApplicationContext().getSharedPreferences("FindMyFriendsPref", 0); // 0 - for private mode;
         getMenuInflater().inflate(R.menu.menu_main, menu);

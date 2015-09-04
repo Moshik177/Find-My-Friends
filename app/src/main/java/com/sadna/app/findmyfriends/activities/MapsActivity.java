@@ -43,6 +43,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public Bitmap mUserDynamicallyGeneratedPictureResource;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.activityPaused();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);

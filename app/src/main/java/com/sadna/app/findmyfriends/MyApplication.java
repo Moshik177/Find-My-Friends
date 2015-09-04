@@ -11,6 +11,8 @@ public class MyApplication extends Application {
     private String mUserId;
     private String mSelectedGroupName;
     private String mSelectedGroupId;
+    private static boolean activityVisible;
+
 
     public String getUsername() {
         return mUsername;
@@ -42,5 +44,17 @@ public class MyApplication extends Application {
 
     public void setSelectedGroupId(String selectedGroupId) {
         this.mSelectedGroupId = selectedGroupId;
+    }
+
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
     }
 }
