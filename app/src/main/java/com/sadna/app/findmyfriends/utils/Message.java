@@ -1,5 +1,7 @@
 package com.sadna.app.findmyfriends.utils;
 
+import com.google.gson.Gson;
+
 /**
  * Created by avihoo on 22/08/2015.
  */
@@ -40,6 +42,12 @@ public class Message {
 
     public void setSelf(boolean isSelf) {
         this.isSelf = isSelf;
+    }
+
+    public String toJsonString()
+    {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

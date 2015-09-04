@@ -3,6 +3,7 @@ package com.sadna.app.findmyfriends.activities;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codebutler.android_websockets.WebSocketClient;
+import com.google.gson.Gson;
 import com.sadna.app.findmyfriends.BaseActivity;
 import com.sadna.app.findmyfriends.MyApplication;
 import com.sadna.app.findmyfriends.R;
@@ -28,6 +30,13 @@ import com.sadna.app.findmyfriends.utils.MessagesListAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -103,6 +112,8 @@ public class ChatGroupActivity extends BaseActivity {
 
         listMessages = new ArrayList<>();
 
+        //this will read line after line and build the right conv
+        addMessagesToArray(listMessages);
         adapter = new MessagesListAdapter(this, listMessages);
         listViewMessages.setAdapter(adapter);
 
@@ -268,7 +279,7 @@ public class ChatGroupActivity extends BaseActivity {
             @Override
             public void run() {
                 listMessages.add(m);
-
+                outputToFile(m.toJsonString());
                 adapter.notifyDataSetChanged();
 
                 // Playing device's notification
@@ -278,6 +289,67 @@ public class ChatGroupActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private boolean outputToFile(String msgStr) {
+        boolean isOk = true;
+        File f = getFilesDir();
+        String FileName = ((MyApplication) getApplication()).getSelectedGroupId() + ".txt";
+        FileOutputStream fos;
+        String seperation = "\n";
+        String yourFilePath = null;
+        try {
+            yourFilePath = FileName;
+            fos = openFileOutput(FileName, Context.MODE_APPEND);
+
+            try {
+                fos.write(msgStr.getBytes());
+                fos.write(seperation.getBytes());
+            } catch (IOException e) {
+                isOk = false;
+                e.printStackTrace();
+            }
+            try {
+                fos.close();
+            } catch (IOException e) {
+                isOk = false;
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            isOk = false;
+            e.printStackTrace();
+        }
+
+        return isOk;
+    }
+
+    private void addMessagesToArray(List<Message> listMessages) {
+        File f = getFilesDir();
+        String FileName = ((MyApplication) getApplication()).getSelectedGroupId() + ".txt";
+        FileInputStream fis = null;
+        String line = null;
+        String strMsg = null;
+        try {
+            fis = openFileInput(FileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+
+                Gson gson = new Gson();
+                Message msg = gson.fromJson(line, Message.class);
+                listMessages.add(msg);
+
+            }
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     private void showToast(final String message) {
@@ -343,7 +415,7 @@ public class ChatGroupActivity extends BaseActivity {
                 .setContentTitle(mTitle)
                 .setContentText(name + ": " + text).setAutoCancel(true);
 
-        mNotificationId = (mNotificationId == MAX_NOTIFICATIONS) ? 1 : mNotificationId+1;
+        mNotificationId = (mNotificationId == MAX_NOTIFICATIONS) ? 1 : mNotificationId + 1;
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, mNotificationId, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_CANCEL_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
