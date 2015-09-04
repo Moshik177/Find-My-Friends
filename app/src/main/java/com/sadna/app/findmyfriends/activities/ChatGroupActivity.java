@@ -72,7 +72,7 @@ public class ChatGroupActivity extends BaseActivity {
 
     private String mTitle = "FindMyFriends";
     private int mNotificationId = 1;
-    private static final int MAX_NOTIFICATIONS = 3;
+    private static final int MAX_NOTIFICATIONS = 5;
     NotificationManager mNotifyMgr;
 
     @Override
