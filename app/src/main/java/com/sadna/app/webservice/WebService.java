@@ -95,7 +95,7 @@ public class WebService {
             return null;
         }
         catch (Throwable exception) {
-            Log.e("WebService", exception.getStackTrace().toString());
+            Log.e("WebService", exception.getMessage());
         }
 
         return "";

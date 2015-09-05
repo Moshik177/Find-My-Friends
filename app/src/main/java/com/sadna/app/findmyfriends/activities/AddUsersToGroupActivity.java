@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -155,12 +156,7 @@ public class AddUsersToGroupActivity extends BaseActivity {
         if (newOrderString.length() <= 10 || newOrderString.substring(0, 3).compareTo("077") == 0 || newOrderString.substring(0, 3).compareTo("072") == 0) {
             stringToReturn = null;
         } else {
-            newOrderString = new StringBuilder(newOrderString.toString().replaceAll("\\s", ""));
-            newOrderString = new StringBuilder(newOrderString.toString().replaceAll("-", ""));
-            String result = newOrderString.substring(0, 4);
-            if (result.compareTo("+972") == 0) {
-                newOrderString = new StringBuilder(newOrderString.replace(0, 4, "0"));
-            }
+            newOrderString = new StringBuilder(newOrderString.toString().replaceAll("\\s", "").replaceAll("-", "").replaceAll("^?972", "0").replace("+", ""));
             stringToReturn = newOrderString.toString();
         }
         return stringToReturn;
