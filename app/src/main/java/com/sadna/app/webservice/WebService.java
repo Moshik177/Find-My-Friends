@@ -3,6 +3,7 @@ package com.sadna.app.webservice;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.jcabi.aspects.RetryOnFailure;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -22,7 +23,7 @@ import java.util.Vector;
 public class WebService {
     private final String namespace = "http://interfaces.dbutils.app.sadna.com/";
     private final String url = "http://vmedu68.mtacloud.co.il:8080/sadna.dbutils-webservice/dbutils-webservice?wsdl";
-    private final int TIMEOUT_IN_MILLISECONDS = 6000;
+    private final int TIMEOUT_IN_MILLISECONDS = 60000;
 
     private String methodName = "getUser";
     private String soapAction =  "http://interfaces.dbutils.app.sadna.com/getUser";
@@ -49,6 +50,7 @@ public class WebService {
         this.soapAction = this.namespace + this.methodName;
     }
 
+    @RetryOnFailure(attempts = 4, delay = 3)
     public String execute(String... params) throws XmlPullParserException, IOException {
 
         SoapObject request = new SoapObject(this.namespace, this.methodName);

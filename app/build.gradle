@@ -33,4 +33,6 @@ dependencies {
     compile 'org.json:json:20141113'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.maps.android:android-maps-utils:0.3.4'
+    compile 'com.jcabi:jcabi-aspects:0.22'
+    compile 'org.aspectj:aspectjrt:1.8.6'
 }
