@@ -50,7 +50,7 @@ public class WebService {
         this.soapAction = this.namespace + this.methodName;
     }
 
-    @RetryOnFailure(attempts = 4, delay = 3)
+    @RetryOnFailure(attempts = 3, delay = 3)
     public String execute(String... params) throws XmlPullParserException, IOException {
 
         SoapObject request = new SoapObject(this.namespace, this.methodName);
