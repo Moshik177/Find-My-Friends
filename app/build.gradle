@@ -13,8 +13,8 @@ android {
         applicationId "com.sadna.app.findmyfriends"
         minSdkVersion 11
         targetSdkVersion 13
-        versionCode 11
-        versionName "7.4"
+        versionCode 12
+        versionName "7.5"
     }
     buildTypes {
         release {
@@ -33,6 +33,4 @@ dependencies {
     compile 'org.json:json:20141113'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.maps.android:android-maps-utils:0.3.4'
-    compile 'com.jcabi:jcabi-aspects:0.22'
-    compile 'org.aspectj:aspectjrt:1.8.6'
 }

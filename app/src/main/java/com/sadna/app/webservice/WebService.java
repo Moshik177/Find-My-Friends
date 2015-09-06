@@ -3,7 +3,6 @@ package com.sadna.app.webservice;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jcabi.aspects.RetryOnFailure;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -12,10 +11,9 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Created by avihoo on 14/03/2015.
@@ -50,7 +48,6 @@ public class WebService {
         this.soapAction = this.namespace + this.methodName;
     }
 
-    @RetryOnFailure(attempts = 3, delay = 3)
     public String execute(String... params) throws XmlPullParserException, IOException {
 
         SoapObject request = new SoapObject(this.namespace, this.methodName);
